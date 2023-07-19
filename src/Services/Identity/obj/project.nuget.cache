@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "JELNbbOCSwPRlSZuqz3VdH/b7/uIB+0yRgXtu5dm2JftbaBH0wHMYFYc+oyiP9z/PJvATui6Kz/ePGGZ/CLbBg==",
+  "dgSpecHash": "CubcmTk2jIdT8etbPKUKLmeBTUEx1R2JLE6F1MON/zB8VcPbQGP0RIYS6k0YbUm6GRUHhHGP4Im3lkuMeW/UAQ==",
   "success": true,
-  "projectFilePath": "C:\\Git\\ProjetoIntegrado\\src\\Services\\Identity\\Identity.csproj",
+  "projectFilePath": "C:\\Git\\ProjetoIntegrado\\src\\Services\\Identity\\Identity.API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\rafae\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\rafae\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",

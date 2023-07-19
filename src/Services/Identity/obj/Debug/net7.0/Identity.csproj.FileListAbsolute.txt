@@ -86,6 +86,7 @@ C:\Users\rafae\OneDrive\Documentos\GitHub\ProjetoIntegrado\src\Services\Identity
 C:\Users\rafae\OneDrive\Documentos\GitHub\ProjetoIntegrado\src\Services\Identity\obj\Debug\net7.0\ref\Identity.dll
 C:\Git\ProjetoIntegrado\src\Services\Identity\bin\Debug\net7.0\appsettings.json
 C:\Git\ProjetoIntegrado\src\Services\Identity\bin\Debug\net7.0\keys\is-signing-key-788CA3F58D0C0FF0DED092DB24DBFEB4.json
+C:\Git\ProjetoIntegrado\src\Services\Identity\bin\Debug\net7.0\keys\is-signing-key-DC2CD5F8A3531A0C9F8510CB2572A20B.json
 C:\Git\ProjetoIntegrado\src\Services\Identity\bin\Debug\net7.0\Identity.exe
 C:\Git\ProjetoIntegrado\src\Services\Identity\bin\Debug\net7.0\Identity.deps.json
 C:\Git\ProjetoIntegrado\src\Services\Identity\bin\Debug\net7.0\Identity.runtimeconfig.json
@@ -170,4 +171,3 @@ C:\Git\ProjetoIntegrado\src\Services\Identity\obj\Debug\net7.0\refint\Identity.d
 C:\Git\ProjetoIntegrado\src\Services\Identity\obj\Debug\net7.0\Identity.pdb
 C:\Git\ProjetoIntegrado\src\Services\Identity\obj\Debug\net7.0\Identity.genruntimeconfig.cache
 C:\Git\ProjetoIntegrado\src\Services\Identity\obj\Debug\net7.0\ref\Identity.dll
-C:\Git\ProjetoIntegrado\src\Services\Identity\bin\Debug\net7.0\keys\is-signing-key-DC2CD5F8A3531A0C9F8510CB2572A20B.json

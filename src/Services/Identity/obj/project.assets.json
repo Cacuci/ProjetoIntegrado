@@ -4892,9 +4892,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Git\\ProjetoIntegrado\\src\\Services\\Identity\\Identity.csproj",
-      "projectName": "Identity",
-      "projectPath": "C:\\Git\\ProjetoIntegrado\\src\\Services\\Identity\\Identity.csproj",
+      "projectUniqueName": "C:\\Git\\ProjetoIntegrado\\src\\Services\\Identity\\Identity.API.csproj",
+      "projectName": "Identity.API",
+      "projectPath": "C:\\Git\\ProjetoIntegrado\\src\\Services\\Identity\\Identity.API.csproj",
       "packagesPath": "C:\\Users\\rafae\\.nuget\\packages\\",
       "outputPath": "C:\\Git\\ProjetoIntegrado\\src\\Services\\Identity\\obj\\",
       "projectStyle": "PackageReference",
