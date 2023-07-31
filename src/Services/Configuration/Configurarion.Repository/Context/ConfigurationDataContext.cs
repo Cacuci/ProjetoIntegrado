@@ -1,19 +1,16 @@
-﻿using Configuration.Domain;
-using Core.Communication.Mediator;
+﻿using Core.Communication.Mediator;
 using Core.Data;
 using Core.Extensions;
 using Core.Messages;
 using Microsoft.EntityFrameworkCore;
 
-namespace Configurarion.Repository
+namespace Configuration.Repository.Context
 {
-    public class ConfigurationContext : DbContext, IUnityOfWork
+    public class ConfigurationDataContext : DbContext, IUnityOfWork
     {
         private readonly IMediatorHandler _mediatorHandler;
 
-        public DbSet<User> AspNetUsers { get; set; }
-
-        public ConfigurationContext(DbContextOptions<ConfigurationContext> options, IMediatorHandler mediatorHandler) : base(options)
+        public ConfigurationDataContext(DbContextOptions<ConfigurationDataContext> options, IMediatorHandler mediatorHandler) : base(options)
         {
             _mediatorHandler = mediatorHandler;
         }
@@ -49,7 +46,7 @@ namespace Configurarion.Repository
         {
             modelBuilder.Ignore<Event>();
 
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ConfigurationContext).Assembly);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ConfigurationDataContext).Assembly);
 
             foreach (var relationship in modelBuilder.Model
                                          .GetEntityTypes()
@@ -59,7 +56,7 @@ namespace Configurarion.Repository
                 relationship.DeleteBehavior = DeleteBehavior.ClientSetNull;
             }
 
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ConfigurationContext).Assembly);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ConfigurationDataContext).Assembly);
 
             base.OnModelCreating(modelBuilder);
         }

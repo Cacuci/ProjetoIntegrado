@@ -1,14 +1,12 @@
-﻿using Core.Data;
-
-namespace Configuration.Domain
+﻿namespace Configuration.Domain
 {
-    public interface IUserRepository : IRepository<User>
+    public interface IUserRepository
     {
-        void CreateAsync(User user);
-        void UpdateAsync(User user);
-        void DeleteAsync(User user);
-        Task<User> GetByIdAsync(int id);
-        Task<User> GetByNameAsync(string name);
-        Task<User> GetByEmailAsync(string email);
+        Task CreateAsync(User user);
+        Task UpdateAsync(User user);
+        Task DeleteAsync(User user);
+        Task<User?> GetByIdAsync(string id);
+        Task<User?> GetByEmailAsync(string email);
+        Task<IEnumerable<User?>> GetAllAsync();
     }
 }

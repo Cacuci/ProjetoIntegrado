@@ -8,11 +8,11 @@ namespace Identity.Controllers
     [Route("api/identity")]
     public class IdentityController : ControllerBase
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
         private readonly IdentityServerTools _tools;
 
-        public IdentityController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IdentityServerTools tools)
+        public IdentityController(UserManager<User> userManager, SignInManager<User> signInManager, IdentityServerTools tools)
         {
             _userManager = userManager;
             _signInManager = signInManager;

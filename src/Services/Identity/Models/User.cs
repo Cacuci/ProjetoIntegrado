@@ -2,7 +2,7 @@
 
 namespace Identity.Models
 {
-    public class ApplicationUser : IdentityUser
+    public class User : IdentityUser
     {
     }
 }

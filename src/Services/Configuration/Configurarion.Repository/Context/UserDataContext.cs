@@ -1,15 +1,12 @@
-﻿using Identity.Models;
+﻿using Configuration.Domain;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Identity.Context
+namespace Configuration.Repository.Context
 {
-    public class IdentityDataContext : IdentityDbContext<User>
+    public class UserDataContext : IdentityDbContext<User>
     {
-        public IdentityDataContext(DbContextOptions<IdentityDataContext> options)
-            : base(options)
-        {
-        }
+        public UserDataContext(DbContextOptions<UserDataContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

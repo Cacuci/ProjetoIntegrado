@@ -1,53 +1,51 @@
-﻿using Configurarion.Repository;
-using Configuration.Domain;
-using Core.Data;
+﻿using Configuration.Domain;
+using Microsoft.AspNetCore.Identity;
 
 namespace Configuration.Repository
 {
-    internal class UserRepository : IUserRepository
+    public class UserRepository : IUserRepository
     {
-        private readonly ConfigurationContext _context;
+        private readonly UserManager<User> _userManager;
 
-        public UserRepository(ConfigurationContext context)
+        public UserRepository(UserManager<User> userManager)
         {
-            _context = context;
+            _userManager = userManager;
         }
 
-        public IUnityOfWork UnityOfWork => _context;
-
-        public void CreateAsync(User user)
+        public async Task CreateAsync(User user)
         {
-            throw new NotImplementedException();
+            await _userManager.CreateAsync(user);
         }
 
-        public void DeleteAsync(User user)
+        public async Task DeleteAsync(User user)
         {
-            throw new NotImplementedException();
+            await _userManager.DeleteAsync(user);
         }
 
-        public Task<User> GetByEmailAsync(string email)
+        public async Task UpdateAsync(User user)
         {
-            throw new NotImplementedException();
+            await _userManager.UpdateAsync(user);
         }
 
-        public Task<User> GetByIdAsync(int id)
+        public async Task<User?> GetByEmailAsync(string email)
         {
-            throw new NotImplementedException();
+            var user = await _userManager.FindByEmailAsync(email);
+
+            return await Task.FromResult(user);
         }
 
-        public Task<User> GetByNameAsync(string name)
+        public async Task<User?> GetByIdAsync(string id)
         {
-            throw new NotImplementedException();
+            var user = await _userManager.FindByIdAsync(id);
+
+            return await Task.FromResult(user);
         }
 
-        public void UpdateAsync(User user)
+        public Task<IEnumerable<User?>> GetAllAsync()
         {
-            throw new NotImplementedException();
-        }
+            IEnumerable<User?> users = _userManager.Users.AsEnumerable();
 
-        public void Dispose()
-        {
-            throw new NotImplementedException();
+            return Task.FromResult(users);
         }
     }
 }

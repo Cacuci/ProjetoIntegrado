@@ -1,21 +1,16 @@
 ﻿using Core.DomainObjects;
+using Microsoft.AspNetCore.Identity;
 
 namespace Configuration.Domain
 {
-    public class User : Entity, IAggregateRoot
+    public class User : IdentityUser, IAggregateRoot
     {
-        public string UserName { get; private set; }
-
-        public string Password { get; private set; }
-
-        public string Email { get; private set; }
-
-        public DateTime DateRegister { get; private set; }
+        public User() { }
 
         public User(string userName, string password, string email)
         {
             UserName = userName;
-            Password = password;
+            PasswordHash = password;
             Email = email;
         }
     }
