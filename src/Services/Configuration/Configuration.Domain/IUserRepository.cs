@@ -2,11 +2,11 @@
 {
     public interface IUserRepository
     {
-        Task CreateAsync(User user);
-        Task UpdateAsync(User user);
-        Task DeleteAsync(User user);
-        Task<User?> GetByIdAsync(string id);
-        Task<User?> GetByEmailAsync(string email);
-        Task<IEnumerable<User?>> GetAllAsync();
+        Task CreateUserAsync(User user);
+        Task UpdateUserAsync(User user);
+        Task DeleteUserAsync(User user);
+        Task<User?> GetUserByIdAsync(string id);
+        Task<User?> GetUserByEmailAsync(string email);
+        Task<IEnumerable<User?>> GetUserAllAsync();
     }
 }

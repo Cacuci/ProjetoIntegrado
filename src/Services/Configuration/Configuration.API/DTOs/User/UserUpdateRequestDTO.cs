@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Configuration.API.DTOs
+namespace Configuration.API.DTOs.User
 {
     public class UserUpdateRequestDTO
     {

@@ -1,5 +1,6 @@
 ﻿using Configuration.Domain;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Configuration.Repository
 {
@@ -12,40 +13,40 @@ namespace Configuration.Repository
             _userManager = userManager;
         }
 
-        public async Task CreateAsync(User user)
+        public async Task CreateUserAsync(User user)
         {
             await _userManager.CreateAsync(user);
         }
 
-        public async Task DeleteAsync(User user)
+        public async Task DeleteUserAsync(User user)
         {
             await _userManager.DeleteAsync(user);
         }
 
-        public async Task UpdateAsync(User user)
+        public async Task UpdateUserAsync(User user)
         {
             await _userManager.UpdateAsync(user);
         }
 
-        public async Task<User?> GetByEmailAsync(string email)
+        public async Task<User?> GetUserByEmailAsync(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
 
-            return await Task.FromResult(user);
+            return user;
         }
 
-        public async Task<User?> GetByIdAsync(string id)
+        public async Task<User?> GetUserByIdAsync(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
 
-            return await Task.FromResult(user);
+            return user;
         }
 
-        public Task<IEnumerable<User?>> GetAllAsync()
+        public Task<IEnumerable<User?>> GetUserAllAsync()
         {
-            IEnumerable<User?> users = _userManager.Users.AsEnumerable();
+            var users = _userManager.Users.AsNoTracking().AsAsyncEnumerable();
 
-            return Task.FromResult(users);
+            return (Task<IEnumerable<User?>>)users;
         }
     }
 }

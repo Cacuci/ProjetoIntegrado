@@ -19,6 +19,8 @@ namespace Configuration.API.Setup
 
             services.AddScoped<IUserRepository, UserRepository>();
 
+            services.AddScoped<IWarehouseRepository, WarehouseRepository>();
+
             services.AddScoped<ConfigurationDataContext>();
         }
     }

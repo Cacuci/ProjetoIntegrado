@@ -1,4 +1,5 @@
-﻿using Core.Communication.Mediator;
+﻿using Configuration.Domain;
+using Core.Communication.Mediator;
 using Core.Data;
 using Core.Extensions;
 using Core.Messages;
@@ -9,6 +10,8 @@ namespace Configuration.Repository.Context
     public class ConfigurationDataContext : DbContext, IUnityOfWork
     {
         private readonly IMediatorHandler _mediatorHandler;
+
+        public DbSet<Warehouse> Warehouses { get; set; }
 
         public ConfigurationDataContext(DbContextOptions<ConfigurationDataContext> options, IMediatorHandler mediatorHandler) : base(options)
         {
