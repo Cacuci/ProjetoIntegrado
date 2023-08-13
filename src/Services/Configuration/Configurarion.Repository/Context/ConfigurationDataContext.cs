@@ -47,10 +47,6 @@ namespace Configuration.Repository.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Ignore<Event>();
-
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ConfigurationDataContext).Assembly);
-
             foreach (var relationship in modelBuilder.Model
                                          .GetEntityTypes()
                                          .SelectMany(e => e
@@ -58,6 +54,7 @@ namespace Configuration.Repository.Context
             {
                 relationship.DeleteBehavior = DeleteBehavior.ClientSetNull;
             }
+            modelBuilder.Ignore<Event>();
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ConfigurationDataContext).Assembly);
 

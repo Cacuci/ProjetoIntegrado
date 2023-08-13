@@ -71,9 +71,9 @@ namespace Configuration.API.Controllers
 
                 if (user is null)
                 {
-                    var userModel = new User(request.Name, request.Password, request.Email);
+                    var userModel = new User(request.Name, request.Email);
 
-                    await _userRepository.CreateUserAsync(userModel);
+                    await _userRepository.CreateUserAsync(userModel, request.Password);
 
                     user = await _userRepository.GetUserByEmailAsync(userModel.Email);
 

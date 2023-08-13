@@ -3,10 +3,14 @@ using Configuration.Domain;
 using Core.Communication.Mediator;
 using Core.Messages.CommonMessages.Notifications;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Configuration.API.Controllers
 {
+    [Authorize]
+    [ApiController]
+    [Route("api/[controller]")]
     public class WarehousesController : ControllerBase
     {
         private readonly IWarehouseRepository _warehouseRepository;
@@ -20,7 +24,6 @@ namespace Configuration.API.Controllers
             _mediator = mediator;
         }
 
-        // GET: api/<WarehousesController>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -40,7 +43,6 @@ namespace Configuration.API.Controllers
             return NotFound();
         }
 
-        // GET: api/<UserController>5
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -60,30 +62,32 @@ namespace Configuration.API.Controllers
             return NotFound();
         }
 
-        // POST api/<WarehouseController>5
+
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public async Task<ActionResult<Guid>> CreateWarehouse([FromBody] WarehouseRequestDTO request)
+        public async Task<ActionResult<string>> CreateWarehouse([FromBody] WarehouseRequestDTO request)
         {
             if (ModelState.IsValid)
             {
                 var warehouse = await _warehouseRepository.GetWarehouseByCodeAsync(request.Code);
 
-                if (warehouse is not null)
+                if (warehouse is null)
                 {
-                    var warehousemodel = new Warehouse(request.Code, request.Name);
+                    var warehouseModel = new Warehouse(request.Code, request.Name);
 
-                    await _warehouseRepository.CreateWarehouseAsync(warehousemodel);
+                    await _warehouseRepository.CreateWarehouseAsync(warehouseModel);
 
-                    warehouse = await _warehouseRepository.GetWarehouseByCodeAsync(warehouse.Code);
+                    await _warehouseRepository.UnityOfWork.Commit();
+
+                    warehouse = await _warehouseRepository.GetWarehouseByCodeAsync(warehouseModel.Code);
 
                     return Created("api/warehouses/{id}", warehouse.Id);
                 }
 
-                return BadRequest("Deposito já cadastrada");
+                return BadRequest("Deposito já cadastrado");
             }
 
             return BadRequest();
@@ -107,6 +111,8 @@ namespace Configuration.API.Controllers
                     warehouse.UpdateCode(request.Code);
 
                     await _warehouseRepository.UpdateAsync(warehouse);
+
+                    await _warehouseRepository.UnityOfWork.Commit();
 
                     return Ok(warehouse.Id);
                 }

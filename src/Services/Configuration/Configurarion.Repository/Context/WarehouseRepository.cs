@@ -27,9 +27,9 @@ namespace Configuration.Repository.Context
             return warehouses;
         }
 
-        public async Task<Warehouse?> GetWarehouseByCodeAsync(string code, CancellationToken cancellationToken)
+        public async Task<Warehouse?> GetWarehouseByCodeAsync(string id, CancellationToken cancellationToken)
         {
-            var warehouse = await _context.Warehouses.FindAsync(code, cancellationToken);
+            var warehouse = await _context.Warehouses.FirstOrDefaultAsync(warehouse => warehouse.Code == id, cancellationToken);
 
             return warehouse;
         }

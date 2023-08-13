@@ -13,9 +13,9 @@ namespace Configuration.Repository
             _userManager = userManager;
         }
 
-        public async Task CreateUserAsync(User user)
+        public async Task CreateUserAsync(User user, string password)
         {
-            await _userManager.CreateAsync(user);
+            await _userManager.CreateAsync(user, password);
         }
 
         public async Task DeleteUserAsync(User user)
@@ -44,9 +44,9 @@ namespace Configuration.Repository
 
         public Task<IEnumerable<User?>> GetUserAllAsync()
         {
-            var users = _userManager.Users.AsNoTracking().AsAsyncEnumerable();
+            var users = _userManager.Users.AsNoTracking().AsEnumerable();
 
-            return (Task<IEnumerable<User?>>)users;
+            return Task.FromResult(users);
         }
     }
 }
