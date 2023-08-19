@@ -1,5 +1,5 @@
-﻿using MediatR;
-using System.ComponentModel.DataAnnotations;
+﻿using FluentValidation.Results;
+using MediatR;
 
 namespace Core.Messages
 {

@@ -1,5 +1,9 @@
-﻿using Configuration.API.DTOs.User;
-using Configuration.Domain;
+﻿using Configuration.Application.Commands;
+using Configuration.Application.DTOs.User;
+using Configuration.Application.Queries;
+using Core.Communication.Mediator;
+using Core.Messages.CommonMessages.Notifications;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,13 +12,15 @@ namespace Configuration.API.Controllers
     [Authorize]
     [ApiController]
     [Route("api/[controller]")]
-    public class UsersController : Controller
+    public class UsersController : ControllerBase
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IUserQueries _userQueries;
+        private readonly IMediatorHandler _mediatorHandler;
 
-        public UsersController(IUserRepository userRepository)
+        public UsersController(IUserQueries userQueries, INotificationHandler<DomainNotification> notification, IMediatorHandler mediatorHandler) : base(notification, mediatorHandler)
         {
-            _userRepository = userRepository;
+            _userQueries = userQueries;
+            _mediatorHandler = mediatorHandler;
         }
 
         // GET: api/<UserController>
@@ -25,16 +31,14 @@ namespace Configuration.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<UserResponseDTO>> GetUserAll()
         {
-            var users = await _userRepository.GetUserAllAsync();
+            var users = await _userQueries.GetUserAll();
 
-            if (users is not null)
+            if (!users.Any())
             {
-                var response = users.Select(user => new UserResponseDTO(user.Id, user.UserName, user.Email));
-
-                return Ok(response);
+                return NotFound();
             }
 
-            return NotFound();
+            return Ok(users);
         }
 
         // GET api/<UserController>/5
@@ -45,16 +49,14 @@ namespace Configuration.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<UserResponseDTO>> GetUserByID(string id)
         {
-            var user = await _userRepository.GetUserByIdAsync(id);
+            var user = await _userQueries.GetUserById(id);
 
-            if (user is not null)
+            if (string.IsNullOrEmpty(user?.ID))
             {
-                var response = new UserResponseDTO(user.Id, user.UserName, user.Email);
-
-                return Ok(response);
+                return NotFound();
             }
 
-            return NotFound();
+            return Ok(user);
         }
 
         // POST api/<UserController>5
@@ -67,20 +69,18 @@ namespace Configuration.API.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await _userRepository.GetUserByEmailAsync(request.Email);
+                var command = new CreateUserCommand(request.Name, request.Email, request.Password);
 
-                if (user is null)
+                await _mediatorHandler.SendCommand(command);
+
+                if (!OperationValid())
                 {
-                    var userModel = new User(request.Name, request.Email);
-
-                    await _userRepository.CreateUserAsync(userModel, request.Password);
-
-                    user = await _userRepository.GetUserByEmailAsync(userModel.Email);
-
-                    return Created("api/users/{id}", user.Id);
+                    return BadRequest(GetMessageError());
                 }
 
-                return BadRequest("Email já cadastrado");
+                var user = await _userQueries.GetUserByEmail(request.Email);
+
+                return Created("api/users/{id}", user?.ID);
             }
 
             return BadRequest(ModelState);
@@ -96,18 +96,18 @@ namespace Configuration.API.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await _userRepository.GetUserByIdAsync(id);
+                var command = new UpdateUserCommand(id, request.Name);
 
-                if (user is not null)
+                await _mediatorHandler.SendCommand(command);
+
+                if (!OperationValid())
                 {
-                    user.UserName = request.Name;
-
-                    await _userRepository.UpdateUserAsync(user);
-
-                    return Ok(user.Id);
+                    return NotFound(GetMessageError());
                 }
 
-                return BadRequest("Usuário não encontrado");
+                var user = await _userQueries.GetUserById(id);
+
+                return Ok(user?.ID);
             }
 
             return BadRequest(ModelState);
@@ -121,16 +121,16 @@ namespace Configuration.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<string>> DeleteUser(string id)
         {
-            var user = await _userRepository.GetUserByIdAsync(id);
+            var command = new DeleteUserCommand(id);
 
-            if (user is not null)
+            await _mediatorHandler.SendCommand(command);
+
+            if (!OperationValid())
             {
-                await _userRepository.DeleteUserAsync(user);
-
-                return Ok(user?.Id);
+                return NotFound(GetMessageError());
             }
 
-            return BadRequest("Usuário não encontrado");
+            return Ok(id);
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using Configuration.Domain;
+﻿using Configuration.Application.Commands;
+using Configuration.Application.Queries;
+using Configuration.Domain;
 using Configuration.Repository;
 using Configuration.Repository.Context;
 using Core.Communication.Mediator;
@@ -17,11 +19,20 @@ namespace Configuration.API.Setup
             // Notifications
             services.AddScoped<INotificationHandler<DomainNotification>, DomainNotificationHandler>();
 
-            services.AddScoped<IUserRepository, UserRepository>();
+            // User
+            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IUserQueries, UserQueries>();
+            services.AddTransient<IRequestHandler<UpdateUserCommand, bool>, UserCommandHandler>();
+            services.AddTransient<IRequestHandler<CreateUserCommand, bool>, UserCommandHandler>();
+            services.AddTransient<IRequestHandler<DeleteUserCommand, bool>, UserCommandHandler>();
 
-            services.AddScoped<IWarehouseRepository, WarehouseRepository>();
+            // Warehouse
+            services.AddTransient<IWarehouseRepository, WarehouseRepository>();
+            services.AddTransient<IWarehouseQueries, WarehouseQueries>();
+            services.AddTransient<IRequestHandler<UpdateWarehouseCommand, bool>, WarehouseCommandHandler>();
+            services.AddTransient<IRequestHandler<CreateWarehouseCommand, bool>, WarehouseCommandHandler>();
 
-            services.AddScoped<ConfigurationDataContext>();
+            services.AddTransient<ConfigurationDataContext>();
         }
     }
 }

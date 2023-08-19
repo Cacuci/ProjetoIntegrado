@@ -1,12 +1,18 @@
 ﻿using Configuration.Domain;
+using Core.Data;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Configuration.Repository.Context
 {
-    public class UserDataContext : IdentityDbContext<User>
+    public class UserDataContext : IdentityDbContext<User>, IUnityOfWork
     {
         public UserDataContext(DbContextOptions<UserDataContext> options) : base(options) { }
+
+        public Task<bool> Commit()
+        {
+            throw new NotImplementedException();
+        }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

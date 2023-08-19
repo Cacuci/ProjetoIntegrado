@@ -1,4 +1,6 @@
 ﻿using Configuration.Domain;
+using Configuration.Repository.Context;
+using Core.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,6 +9,10 @@ namespace Configuration.Repository
     public class UserRepository : IUserRepository
     {
         private readonly UserManager<User> _userManager;
+
+        private readonly UserDataContext _context;
+
+        public IUnityOfWork UnityOfWork => _context;
 
         public UserRepository(UserManager<User> userManager)
         {
@@ -28,25 +34,27 @@ namespace Configuration.Repository
             await _userManager.UpdateAsync(user);
         }
 
-        public async Task<User?> GetUserByEmailAsync(string email)
+        public async Task<User?> GetUserByEmail(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
 
             return user;
         }
 
-        public async Task<User?> GetUserByIdAsync(string id)
+        public async Task<User?> GetUserById(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
 
             return user;
         }
 
-        public Task<IEnumerable<User?>> GetUserAllAsync()
+        public Task<IEnumerable<User?>> GetUserAll()
         {
             var users = _userManager.Users.AsNoTracking().AsEnumerable();
 
             return Task.FromResult(users);
         }
+
+        public void Dispose() => _userManager.Dispose();
     }
 }

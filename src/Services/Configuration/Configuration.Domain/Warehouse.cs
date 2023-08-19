@@ -7,7 +7,7 @@ namespace Configuration.Domain
         public string Code { get; private set; }
         public string Name { get; private set; }
         public DateTime DateRegister { get; private set; }
-        public bool Active { get; private set; }
+        public bool Active { get; private set; } = true;
 
         public Warehouse(string code, string name)
         {
