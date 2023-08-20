@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace Configuration.Repository.Migrations
+namespace Configuration.Infrastructure.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration

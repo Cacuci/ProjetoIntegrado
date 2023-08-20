@@ -1,9 +1,9 @@
 ﻿using Configuration.Domain;
-using Configuration.Repository.Context;
+using Configuration.Infrastructure.Context;
 using Core.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace Configuration.Repository
+namespace Configuration.Infrastructure
 {
     public class WarehouseRepository : IWarehouseRepository
     {

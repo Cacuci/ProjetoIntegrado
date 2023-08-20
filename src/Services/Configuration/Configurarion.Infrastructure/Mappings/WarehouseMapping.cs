@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Configuration.Repository.Mappings
+namespace Configuration.Infrastructure.Mappings
 {
     public class WarehouseMapping : IEntityTypeConfiguration<Warehouse>
     {

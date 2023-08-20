@@ -5,7 +5,7 @@ using Core.Extensions;
 using Core.Messages;
 using Microsoft.EntityFrameworkCore;
 
-namespace Configuration.Repository.Context
+namespace Configuration.Infrastructure.Context
 {
     public class ConfigurationDataContext : DbContext, IUnityOfWork
     {
