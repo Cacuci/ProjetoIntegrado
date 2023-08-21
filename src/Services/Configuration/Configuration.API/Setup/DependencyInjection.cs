@@ -1,8 +1,8 @@
 ﻿using Configuration.Application.Commands;
 using Configuration.Application.Queries;
 using Configuration.Domain;
-using Configuration.Infrastructure;
 using Configuration.Infrastructure.Context;
+using Configuration.Infrastructure.Repository;
 using Core.Communication.Mediator;
 using Core.Messages.CommonMessages.Notifications;
 using MediatR;

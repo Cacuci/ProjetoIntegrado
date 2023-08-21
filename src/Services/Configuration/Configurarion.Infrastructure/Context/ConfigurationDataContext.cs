@@ -54,6 +54,7 @@ namespace Configuration.Infrastructure.Context
             {
                 relationship.DeleteBehavior = DeleteBehavior.ClientSetNull;
             }
+
             modelBuilder.Ignore<Event>();
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ConfigurationDataContext).Assembly);
