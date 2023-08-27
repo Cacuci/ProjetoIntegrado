@@ -25,6 +25,17 @@ namespace Inbound.Domain
             }
         }
 
+        public void AddItemRange(IEnumerable<OrderItem> items)
+        {
+            foreach (var item in items)
+            {
+                if (!_items.Any(c => c.ProductCode == item.ProductCode))
+                {
+                    _items.Add(item);
+                }
+            }
+        }
+
         public void RemoveItem(OrderItem item)
         {
             var result = _items.FirstOrDefault(c => c.ProductCode == item.ProductCode);

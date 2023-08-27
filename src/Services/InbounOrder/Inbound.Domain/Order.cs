@@ -28,6 +28,22 @@ namespace Inbound.Domain
             }
         }
 
+        public void AddDocumentRange(IEnumerable<OrderDocument> documents)
+        {
+            foreach (var document in documents)
+            {
+                if (!_documents.Any(c => c.Number == document.Number))
+                {
+                    _documents.Add(document);
+                }
+            }
+        }
+
+        public void ClearDocuments()
+        {
+            _documents.Clear();
+        }
+
         public void RemoveDocument(OrderDocument document)
         {
             var result = _documents.FirstOrDefault(c => c.Number == document.Number);

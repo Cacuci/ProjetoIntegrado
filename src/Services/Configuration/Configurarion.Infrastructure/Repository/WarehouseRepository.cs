@@ -16,9 +16,9 @@ namespace Configuration.Infrastructure.Repository
             _context = context;
         }
 
-        public async Task CreateWarehouseAsync(Warehouse warehouse)
+        public async Task CreateWarehouseAsync(Warehouse warehouse, CancellationToken cancellationToken)
         {
-            await _context.Warehouses.AddAsync(warehouse);
+            await _context.Warehouses.AddAsync(warehouse, cancellationToken);
         }
 
         public async Task<IEnumerable<Warehouse>> GetWarehouseAllAsync(CancellationToken cancellationToken)

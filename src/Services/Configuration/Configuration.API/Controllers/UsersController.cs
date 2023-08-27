@@ -1,6 +1,6 @@
 ﻿using Configuration.Application.Commands;
-using Configuration.Application.DTOs.User;
 using Configuration.Application.Queries;
+using Configuration.Application.Queries.DTOs.User;
 using Core.Communication.Mediator;
 using Core.Messages.CommonMessages.Notifications;
 using MediatR;

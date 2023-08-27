@@ -36,7 +36,7 @@ namespace Configuration.Application.Commands
 
             var warehouseModel = new Warehouse(request.Code, request.Name);
 
-            await _warehouseRepository.CreateWarehouseAsync(warehouseModel);
+            await _warehouseRepository.CreateWarehouseAsync(warehouseModel, cancellationToken);
 
             return await _warehouseRepository.UnityOfWork.Commit();
         }

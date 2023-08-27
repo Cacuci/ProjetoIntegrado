@@ -1,4 +1,4 @@
-﻿using Configuration.Application.DTOs.Warehouse;
+﻿using Configuration.Application.Queries.DTOs.Warehouse;
 using Configuration.Domain;
 
 namespace Configuration.Application.Queries
@@ -31,7 +31,7 @@ namespace Configuration.Application.Queries
             return new WarehouseResponseDTO(warehouse.Id, warehouse.Code, warehouse.Name);
         }
 
-        public async Task<WarehouseResponseDTO?> GetWarehouseByIDAsync(Guid id, CancellationToken cancellationToken)
+        public async Task<WarehouseResponseDTO?> GetWarehouseByIdAsync(Guid id, CancellationToken cancellationToken)
         {
             var warehouse = await _warehouseRepository.GetWarehouseByIdAsync(id, cancellationToken);
 

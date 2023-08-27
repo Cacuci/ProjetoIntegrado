@@ -1,6 +1,6 @@
 ﻿using Configuration.Application.Commands;
-using Configuration.Application.DTOs.Warehouse;
 using Configuration.Application.Queries;
+using Configuration.Application.Queries.DTOs.Warehouse;
 using Core.Communication.Mediator;
 using Core.Messages.CommonMessages.Notifications;
 using MediatR;
@@ -47,7 +47,7 @@ namespace Configuration.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<WarehouseResponseDTO>> GetWarehouseByID(Guid id, CancellationToken cancellationToken)
         {
-            var warehouse = await _warehouseQueries.GetWarehouseByIDAsync(id, cancellationToken);
+            var warehouse = await _warehouseQueries.GetWarehouseByIdAsync(id, cancellationToken);
 
             if (warehouse is null)
             {
@@ -77,7 +77,7 @@ namespace Configuration.API.Controllers
 
                 var warehouse = await _warehouseQueries.GetWarehouseByCodeAsync(request.Code, cancellationToken);
 
-                return Created("api/warehouses/{id}", warehouse.ID);
+                return Created("api/warehouses/{id}", warehouse.Id);
             }
 
             return BadRequest();
@@ -101,9 +101,9 @@ namespace Configuration.API.Controllers
                     return NotFound(GetMessageError());
                 }
 
-                var warehouse = await _warehouseQueries.GetWarehouseByIDAsync(id, cancellationToken);
+                var warehouse = await _warehouseQueries.GetWarehouseByIdAsync(id, cancellationToken);
 
-                return Ok(warehouse?.ID);
+                return Ok(warehouse?.Id);
             }
 
             return BadRequest();
