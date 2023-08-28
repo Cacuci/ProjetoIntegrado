@@ -4,12 +4,11 @@ using Inbound.Application.Commands;
 using Inbound.Application.Queries;
 using Inbound.Application.Queries.DTOs;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Inbound.API.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class OrdersController : ControllerBase
@@ -57,22 +56,22 @@ namespace Inbound.API.Controllers
             return Ok(warehouse);
         }
 
-        [HttpGet("{number}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<OrderResponseDTO>> GetOrderByNumber(string number, CancellationToken cancellationToken)
-        {
-            var warehouse = await _orderQueries.GetOrderByNumberAsync(number, cancellationToken);
+        //[HttpGet("{number}")]
+        //[ProducesResponseType(StatusCodes.Status200OK)]
+        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
+        //[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        //[ProducesResponseType(StatusCodes.Status404NotFound)]
+        //public async Task<ActionResult<OrderResponseDTO>> GetOrderByNumber(string number, CancellationToken cancellationToken)
+        //{
+        //    var warehouse = await _orderQueries.GetOrderByNumberAsync(number, cancellationToken);
 
-            if (warehouse is null)
-            {
-                return NotFound();
-            }
+        //    if (warehouse is null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return Ok(warehouse);
-        }
+        //    return Ok(warehouse);
+        //}
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]

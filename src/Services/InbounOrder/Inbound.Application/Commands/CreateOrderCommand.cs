@@ -34,6 +34,11 @@ namespace Inbound.Application.Commands
                 .NotEqual(true)
                 .WithMessage("Campo obrigatório vazio")
                 .OverridePropertyName("Items");
+
+            RuleFor(order => order.Order.Documents.All(item => item.Items.All(package => !package.Barcodes.Any())))
+                .NotEqual(true)
+                .WithMessage("Campo obrigatório vazio")
+                .OverridePropertyName("Barcodes");
         }
     }
 }

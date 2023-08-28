@@ -16,18 +16,32 @@ namespace Inbound.Application.Queries
         {
             var orders = await _orderRepository.GetAllOrdersAsync(cancellationToken);
 
-            return orders.Select(order => new OrderResponseDTO(orderId: order.Id,
-                                                               number: order.Number,
-                                                               warehouseCode: order.WarehouseCode,
-                                                               dateCreated: order.DateCreated,
-                                                               documents: order.Documents.Select(document =>
-                                                               new OrderDocumentResponseDTO(id: document.Id,
-                                                                                            number: document.Number,
-                                                                                            items: document.Items.Select(item => new OrderItemResponseDTO(id: item.Id,
-                                                                                                                                                          productCode: item.ProductCode,
-                                                                                                                                                          typepackage: item.TypePackage,
-                                                                                                                                                          quantityPackage: item.QuantityPackage,
-                                                                                                                                                          quantity: item.Quantity))))));
+            var result = orders.Select(order => new OrderResponseDTO
+            (
+                orderId: order.Id,
+                number: order.Number,
+                warehouseCode: order.WarehouseCode,
+                dateCreated: order.DateCreated,
+                documents: order.Documents.Select(document =>
+                new OrderDocumentResponseDTO(
+                    id: document.Id,
+                    number: document.Number,
+                    items: document.Items.Select(item =>
+                    {
+                        var product = _orderRepository.GetProductByIdAsync(item.ProductId).Result;
+
+                        var package = _orderRepository.GetPackageByIdAsync(item.PackageId).Result;
+
+                        var result = new OrderItemResponseDTO(id: item.Id,
+                                                              productCode: product?.Code,
+                                                              typepackage: package?.Type,
+                                                              quantityPackage: package.Capacity,
+                                                              quantity: item.Quantity);
+
+                        return result;
+                    })))));
+
+            return result;
         }
 
         public async Task<OrderResponseDTO?> GetOrderByNumberAsync(string number, CancellationToken cancellationToken)
@@ -43,14 +57,23 @@ namespace Inbound.Application.Queries
                                         number: order.Number,
                                         warehouseCode: order.WarehouseCode,
                                         dateCreated: order.DateCreated,
-                                        documents: order.Documents.Select(document =>
-                                        new OrderDocumentResponseDTO(id: document.Id,
-                                                                         number: document.Number,
-                                                                         items: document.Items.Select(item => new OrderItemResponseDTO(id: item.Id,
-                                                                                                                                           productCode: item.ProductCode,
-                                                                                                                                           typepackage: item.TypePackage,
-                                                                                                                                           quantityPackage: item.QuantityPackage,
-                                                                                                                                           quantity: item.Quantity)))));
+                                        documents: order.Documents.Select(document => new OrderDocumentResponseDTO
+                                        (
+                                            id: document.Id,
+                                            number: document.Number,
+                                            items: document.Items.Select(item =>
+                                            {
+                                                var product = _orderRepository.GetProductByIdAsync(item.ProductId).Result;
+
+                                                var package = _orderRepository.GetPackageByIdAsync(item.PackageId).Result;
+
+                                                var result = new OrderItemResponseDTO(id: item.Id,
+                                                                                          productCode: product?.Code,
+                                                                                          typepackage: package?.Type,
+                                                                                          quantityPackage: package.Capacity,
+                                                                                          quantity: item.Quantity);
+                                                return result;
+                                            }))));
         }
 
         public async Task<OrderResponseDTO?> GetOrderByIdAsync(Guid id, CancellationToken cancellationToken)
@@ -66,14 +89,24 @@ namespace Inbound.Application.Queries
                                         number: order.Number,
                                         warehouseCode: order.WarehouseCode,
                                         dateCreated: order.DateCreated,
-                                        documents: order.Documents.Select(document =>
-                                        new OrderDocumentResponseDTO(id: document.Id,
-                                                                         number: document.Number,
-                                                                         items: document.Items.Select(item => new OrderItemResponseDTO(id: item.Id,
-                                                                                                                                           productCode: item.ProductCode,
-                                                                                                                                           typepackage: item.TypePackage,
-                                                                                                                                           quantityPackage: item.QuantityPackage,
-                                                                                                                                           quantity: item.Quantity)))));
+                                        documents: order.Documents.Select(document => new OrderDocumentResponseDTO
+                                        (
+                                            id: document.Id,
+                                            number: document.Number,
+                                            items: document.Items.Select(item =>
+                                            {
+                                                var product = _orderRepository.GetProductByIdAsync(item.ProductId).Result;
+
+                                                var package = _orderRepository.GetPackageByIdAsync(item.PackageId).Result;
+
+                                                var result = new OrderItemResponseDTO(id: item.Id,
+                                                                                          productCode: product?.Code,
+                                                                                          typepackage: package?.Type,
+                                                                                          quantityPackage: package.Capacity,
+                                                                                          quantity: item.Quantity);
+
+                                                return result;
+                                            }))));
         }
     }
 }

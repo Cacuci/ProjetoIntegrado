@@ -14,6 +14,9 @@ namespace Inbound.Infrastructure.Context
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDocument> OrderDocuments { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Package> Packages { get; set; }
+        public DbSet<Barcode> Barcodes { get; set; }
 
         public InboundDataContext(DbContextOptions<InboundDataContext> options, IMediatorHandler mediatorHandler) : base(options)
         {
@@ -75,11 +78,20 @@ namespace Inbound.Infrastructure.Context
                         .HasIndex(c => new
                         {
                             c.DocumentId,
-                            c.ProductCode,
-                            c.TypePackage,
-                            c.QuantityPackage
+                            c.ProductId,
+                            c.PackageId
                         })
                         .IsUnique();
+
+            modelBuilder.Entity<Product>()
+                        .HasIndex(c => c.Code).IsUnique();
+
+            modelBuilder.Entity<Package>()
+                        .HasIndex(c => new
+                        {
+                            c.Type,
+                            c.Capacity
+                        });
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(InboundDataContext).Assembly);
 

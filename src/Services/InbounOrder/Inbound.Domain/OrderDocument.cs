@@ -17,9 +17,16 @@ namespace Inbound.Domain
         private readonly List<OrderItem> _items;
         public IEnumerable<OrderItem> Items => _items;
 
+        public bool ItemExists(OrderItem item)
+        {
+            bool found = _items.Exists(c => c.ProductId == item.ProductId);
+
+            return found;
+        }
+
         public void AddItem(OrderItem item)
         {
-            if (!_items.Any(c => c.ProductCode == item.ProductCode))
+            if (!ItemExists(item))
             {
                 _items.Add(item);
             }
@@ -29,7 +36,7 @@ namespace Inbound.Domain
         {
             foreach (var item in items)
             {
-                if (!_items.Any(c => c.ProductCode == item.ProductCode))
+                if (!ItemExists(item))
                 {
                     _items.Add(item);
                 }
@@ -38,7 +45,7 @@ namespace Inbound.Domain
 
         public void RemoveItem(OrderItem item)
         {
-            var result = _items.FirstOrDefault(c => c.ProductCode == item.ProductCode);
+            var result = _items.FirstOrDefault(c => c.ProductId == item.ProductId);
 
             if (result is not null)
             {

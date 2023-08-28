@@ -20,9 +20,16 @@ namespace Inbound.Domain
         private readonly List<OrderDocument> _documents;
         public IReadOnlyCollection<OrderDocument> Documents => _documents;
 
+        public bool DocumentExists(OrderDocument document)
+        {
+            bool found = _documents.Exists(c => c.Number == document.Number);
+
+            return found;
+        }
+
         public void AddDocument(OrderDocument document)
         {
-            if (!_documents.Any(c => c.Number == document.Number))
+            if (!DocumentExists(document))
             {
                 _documents.Add(document);
             }
@@ -32,7 +39,7 @@ namespace Inbound.Domain
         {
             foreach (var document in documents)
             {
-                if (!_documents.Any(c => c.Number == document.Number))
+                if (!DocumentExists(document))
                 {
                     _documents.Add(document);
                 }
