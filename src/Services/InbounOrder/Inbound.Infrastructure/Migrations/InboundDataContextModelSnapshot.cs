@@ -25,7 +25,6 @@ namespace Inbound.Infrastructure.Migrations
             modelBuilder.Entity("Inbound.Domain.Barcode", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Active")
@@ -35,7 +34,7 @@ namespace Inbound.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("PackageId")
+                    b.Property<Guid>("PackageId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -48,7 +47,6 @@ namespace Inbound.Infrastructure.Migrations
             modelBuilder.Entity("Inbound.Domain.Order", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DateCreated")
@@ -76,7 +74,6 @@ namespace Inbound.Infrastructure.Migrations
             modelBuilder.Entity("Inbound.Domain.OrderDocument", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Number")
@@ -97,7 +94,6 @@ namespace Inbound.Infrastructure.Migrations
             modelBuilder.Entity("Inbound.Domain.OrderItem", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("DocumentId")
@@ -113,7 +109,8 @@ namespace Inbound.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Quantity")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(15, 3)
+                        .HasColumnType("decimal(15,3)");
 
                     b.HasKey("Id");
 
@@ -128,7 +125,6 @@ namespace Inbound.Infrastructure.Migrations
             modelBuilder.Entity("Inbound.Domain.Package", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Active")
@@ -137,7 +133,7 @@ namespace Inbound.Infrastructure.Migrations
                     b.Property<int>("Capacity")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("ProductId")
+                    b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Type")
@@ -156,7 +152,6 @@ namespace Inbound.Infrastructure.Migrations
             modelBuilder.Entity("Inbound.Domain.Product", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Active")
@@ -182,7 +177,9 @@ namespace Inbound.Infrastructure.Migrations
                 {
                     b.HasOne("Inbound.Domain.Package", null)
                         .WithMany("Barcodes")
-                        .HasForeignKey("PackageId");
+                        .HasForeignKey("PackageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Inbound.Domain.OrderDocument", b =>
@@ -190,6 +187,7 @@ namespace Inbound.Infrastructure.Migrations
                     b.HasOne("Inbound.Domain.Order", null)
                         .WithMany("Documents")
                         .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -204,7 +202,9 @@ namespace Inbound.Infrastructure.Migrations
                 {
                     b.HasOne("Inbound.Domain.Product", null)
                         .WithMany("Packages")
-                        .HasForeignKey("ProductId");
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Inbound.Domain.Order", b =>

@@ -4,6 +4,7 @@ using Core.Extensions;
 using Core.Messages;
 using Inbound.Domain;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Inbound.Infrastructure.Context
 {
@@ -52,12 +53,12 @@ namespace Inbound.Infrastructure.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            foreach (var relationship in modelBuilder.Model
-                                         .GetEntityTypes()
-                                         .SelectMany(e => e
-                                         .GetForeignKeys()))
+            foreach (var entity in modelBuilder.Model.GetEntityTypes())
             {
-                relationship.DeleteBehavior = DeleteBehavior.ClientSetNull;
+                foreach (var property in entity.GetProperties().Where(p => p.IsPrimaryKey()))
+                {
+                    property.ValueGenerated = ValueGenerated.Never;
+                }
             }
 
             modelBuilder.Ignore<Event>();
@@ -83,6 +84,9 @@ namespace Inbound.Infrastructure.Context
                         })
                         .IsUnique();
 
+            modelBuilder.Entity<OrderItem>()
+                        .Property(c => c.Quantity).HasPrecision(15, 3);
+
             modelBuilder.Entity<Product>()
                         .HasIndex(c => c.Code).IsUnique();
 
@@ -91,6 +95,13 @@ namespace Inbound.Infrastructure.Context
                         {
                             c.Type,
                             c.Capacity
+                        });
+
+            modelBuilder.Entity<Barcode>()
+                        .HasIndex(c => new
+                        {
+                            c.PackageId,
+                            c.Code
                         });
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(InboundDataContext).Assembly);

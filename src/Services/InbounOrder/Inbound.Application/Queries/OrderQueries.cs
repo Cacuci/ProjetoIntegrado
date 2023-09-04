@@ -34,9 +34,12 @@ namespace Inbound.Application.Queries
 
                         var result = new OrderItemResponseDTO(id: item.Id,
                                                               productCode: product?.Code,
+                                                              productName: product?.Name,
                                                               typepackage: package?.Type,
                                                               quantityPackage: package.Capacity,
                                                               quantity: item.Quantity);
+
+                        result.AddBarcodeRange(package.Barcodes.Select(barcode => new BarcodeResponseDTO(barcode.Code, barcode.Active)));
 
                         return result;
                     })))));
@@ -69,9 +72,13 @@ namespace Inbound.Application.Queries
 
                                                 var result = new OrderItemResponseDTO(id: item.Id,
                                                                                           productCode: product?.Code,
+                                                                                          productName: product?.Name,
                                                                                           typepackage: package?.Type,
                                                                                           quantityPackage: package.Capacity,
                                                                                           quantity: item.Quantity);
+
+                                                result.AddBarcodeRange(package.Barcodes.Select(barcode => new BarcodeResponseDTO(barcode.Code, barcode.Active)));
+
                                                 return result;
                                             }))));
         }
@@ -101,9 +108,12 @@ namespace Inbound.Application.Queries
 
                                                 var result = new OrderItemResponseDTO(id: item.Id,
                                                                                           productCode: product?.Code,
+                                                                                          productName: product?.Name,
                                                                                           typepackage: package?.Type,
                                                                                           quantityPackage: package.Capacity,
                                                                                           quantity: item.Quantity);
+
+                                                result.AddBarcodeRange(package.Barcodes.Select(barcode => new BarcodeResponseDTO(barcode.Code, barcode.Active)));
 
                                                 return result;
                                             }))));

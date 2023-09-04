@@ -13,7 +13,7 @@ namespace Inbound.Application.Queries.DTOs
         public string WarehouseCode { get; set; }
 
         [Required(ErrorMessage = "Campo obrigatório não fornecido")]
-        public DateTime DateCreated { get; set; }
+        public DateTime? DateCreated { get; set; } = DateTime.UtcNow;
 
         [Required(ErrorMessage = "Campo obrigatório não fornecido")]
         public IEnumerable<OrderDocumentRequestDTO> Documents { get; set; }

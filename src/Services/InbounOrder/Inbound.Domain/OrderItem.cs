@@ -21,5 +21,10 @@ namespace Inbound.Domain
         {
             Quantity = quantity;
         }
+
+        public static OrderItem OrderItemFactory(Guid documentId, Guid productId, Guid packageId, decimal quantity)
+        {
+            return new OrderItem(documentId, productId, packageId, quantity);
+        }
     }
 }

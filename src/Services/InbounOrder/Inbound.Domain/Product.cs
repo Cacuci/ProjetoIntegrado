@@ -21,8 +21,8 @@ namespace Inbound.Domain
         public bool PackageExists(Package package)
         {
             bool found = _packages.Exists(c => c.ProductId == package.ProductId &&
-                                                c.Type == package.Type &&
-                                                c.Capacity == package.Capacity);
+                                               c.Type == package.Type &&
+                                               c.Capacity == package.Capacity);
 
             return found;
         }
@@ -45,9 +45,21 @@ namespace Inbound.Domain
             }
         }
 
+        public Package? GetPackage(Package package)
+        {
+            return _packages.FirstOrDefault(c => c.ProductId == package.ProductId &&
+                                                 c.Type == package.Type &&
+                                                 c.Capacity == package.Capacity);
+        }
+
         public void Activate(bool active)
         {
             Active = active;
+        }
+
+        public static Product ProductFactory(string code, string name)
+        {
+            return new Product(code, name);
         }
     }
 }

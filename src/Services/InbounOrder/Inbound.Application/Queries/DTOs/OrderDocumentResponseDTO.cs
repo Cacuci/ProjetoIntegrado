@@ -1,4 +1,6 @@
-﻿namespace Inbound.Application.Queries.DTOs
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Inbound.Application.Queries.DTOs
 {
     public class OrderDocumentResponseDTO
     {
@@ -9,8 +11,14 @@
             Items = items;
         }
 
+        [Required(ErrorMessage = "Campo obrigatório não fornecido")]
         public Guid Id { get; private set; }
+
+        [MaxLength(20, ErrorMessage = "Valor não deve ser maior que 20 caracteres")]
+        [Required(ErrorMessage = "Campo obrigatório não fornecido")]
         public string Number { get; private set; }
+
+        [Required(ErrorMessage = "Campo obrigatório não fornecido")]
         public IEnumerable<OrderItemResponseDTO> Items { get; set; }
     }
 }

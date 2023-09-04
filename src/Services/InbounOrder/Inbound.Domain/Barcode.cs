@@ -18,5 +18,10 @@ namespace Inbound.Domain
         {
             Active = active;
         }
+
+        public static Barcode BarcodeFactory(Guid packageId, string code)
+        {
+            return new Barcode(packageId, code);
+        }
     }
 }

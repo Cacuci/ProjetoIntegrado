@@ -2,7 +2,6 @@
 using Core.Messages;
 using Core.Messages.CommonMessages.Notifications;
 using Inbound.Domain;
-using Inbound.Domain.Comparer;
 using MediatR;
 
 namespace Inbound.Application.Commands
@@ -35,9 +34,10 @@ namespace Inbound.Application.Commands
                 return false;
             }
 
-            order = new Order(request.Order.Number, request.Order.WarehouseCode, request.Order.DateCreated);
+            order = Order.OrderFactory(request.Order.Number, request.Order.WarehouseCode,
+                                       request.Order.DateCreated.Value);
 
-            var documents = request.Order.Documents.Select(async document =>
+            foreach (var document in request.Order.Documents)
             {
                 var documentModel = new OrderDocument(order.Id, document.Number);
 
@@ -49,11 +49,11 @@ namespace Inbound.Application.Commands
 
                     if (product is null)
                     {
-                        product = new Product(item.ProductCode, item.ProductName);
+                        product = Product.ProductFactory(item.ProductCode, item.ProductName);
 
-                        package = new Package(product.Id, item.TypePackage, item.QuantityPackage);
+                        package = Package.PackageFactory(product.Id, item.TypePackage, item.QuantityPackage);
 
-                        package.AddBarcodeRange(item.Barcodes.Select(barcode => new Barcode(package.Id, barcode.Code)));
+                        package.AddBarcodeRange(item.Barcodes.Select(barcode => Barcode.BarcodeFactory(package.Id, barcode.Code)));
 
                         product.AddPackage(package);
 
@@ -61,7 +61,7 @@ namespace Inbound.Application.Commands
                     }
                     else
                     {
-                        package = new Package(product.Id, item.TypePackage, item.QuantityPackage);
+                        package = Package.PackageFactory(product.Id, item.TypePackage, item.QuantityPackage);
 
                         if (!product.PackageExists(package))
                         {
@@ -69,21 +69,41 @@ namespace Inbound.Application.Commands
 
                             product.AddPackage(package);
                         }
+                        else
+                        {
+                            package = product.GetPackage(package);
+                        }
 
-                        var barcodes = item.Barcodes.Select(barcode => new Barcode(package.Id, barcode.Code))
-                                                    .Except(product.Packages.SelectMany(package => package.Barcodes), new BarcodeComparer());
+                        if (package is null)
+                        {
+                            await _mediatorHandler.PublishNotification(new DomainNotification("Package", $"Falha ao localizar a embalagem {item.TypePackage} {item.QuantityPackage} do item {item.ProductCode} {item.ProductName}"));
 
-                        package.AddBarcodeRange(barcodes);
+                            return false;
+                        }
 
+                        package.DisableAllBarcode();
+
+                        var existsBarcodes = package.GetAllExistingBarcode(item.Barcodes.Select(barcode => new Barcode(package.Id, barcode.Code)));
+
+                        package.ActivateBarcodeRange(existsBarcodes);
+
+                        await _orderRepository.UpdateBarcodeRange(package.Barcodes);
+
+                        var newbarcodes = package.GetAllNewBarcode(item.Barcodes.Select(barcode => new Barcode(package.Id, barcode.Code)));
+
+                        if (newbarcodes.Any())
+                        {
+                            package.AddBarcodeRange(newbarcodes);
+
+                            await _orderRepository.AddBarcodeRangeAsync(newbarcodes, cancellationToken);
+                        }
                     }
 
-                    documentModel.AddItem(new OrderItem(documentModel.Id, product.Id, package.Id, item.Quantity));
+                    documentModel.AddItem(OrderItem.OrderItemFactory(documentModel.Id, product.Id, package.Id, item.Quantity));
                 }
 
-                return documentModel;
-            });
-
-            order.AddDocumentRange(documents.Select(document => document.Result));
+                order.AddDocument(documentModel);
+            }
 
             await _orderRepository.CreateOrderAsync(order, cancellationToken);
 
@@ -97,56 +117,88 @@ namespace Inbound.Application.Commands
                 return false;
             }
 
-            //var order = await _orderRepository.GetOrderByNumberAsync(request.Order.Number, cancellationToken);
+            var order = await _orderRepository.GetOrderByNumberAsync(request.Order.Number, cancellationToken);
 
-            //if (order is null)
-            //{
-            //    await _mediatorHandler.PublishNotification(new DomainNotification("Order", "Ordem não encontrada"));
+            if (order is null)
+            {
+                await _mediatorHandler.PublishNotification(new DomainNotification("Order", "Ordem não encontrada"));
 
-            //    return false;
-            //}
+                return false;
+            }
 
-            //order.ClearDocuments();
+            await _orderRepository.RemoveRangeDocument(order.Documents);
 
-            //order.AddDocumentRange(request.Order.Documents.Select(document =>
-            //{
-            //    var documentModel = new OrderDocument(order.Id, document.Number);
+            order.ClearDocuments();
 
-            //    document.Items.ForEach(async item =>
-            //    {
-            //        var productModel = await _orderRepository.GetProductByCodeAsync(item.ProductCode, cancellationToken);
+            foreach (var document in request.Order.Documents)
+            {
+                var documentModel = new OrderDocument(order.Id, document.Number);
 
-            //        if (productModel is null)
-            //        {
-            //            productModel = new Product(item.ProductCode, item.ProductName);
-            //        }
+                foreach (var item in document.Items)
+                {
+                    var product = await _orderRepository.GetProductByCodeAsync(item.ProductCode, cancellationToken);
 
-            //        var packageModel = await _orderRepository.GetPackageByProductIdAsync(item.TypePackage, item.QuantityPackage, cancellationToken);
+                    Package? package;
 
-            //        if (packageModel is null)
-            //        {
-            //            packageModel = new Package(item.TypePackage, item.QuantityPackage);
-            //        }
+                    if (product is null)
+                    {
+                        product = Product.ProductFactory(item.ProductCode, item.ProductName);
 
-            //        item.Barcodes.ForEach(async barcode =>
-            //        {
-            //            var barcodeModel = await _orderRepository.GetBarcodeByCodeAsync(barcode.Code, cancellationToken);
+                        package = Package.PackageFactory(product.Id, item.TypePackage, item.QuantityPackage);
 
-            //            if (barcodeModel is null)
-            //            {
-            //                barcodeModel = new Barcode(barcode.Code);
-            //            }
+                        package.AddBarcodeRange(item.Barcodes.Select(barcode => Barcode.BarcodeFactory(package.Id, barcode.Code)));
 
-            //            packageModel.AddBarcode(barcodeModel);
-            //        });
+                        product.AddPackage(package);
 
-            //        documentModel.AddItem(new OrderItem(documentModel.Id, productModel.Id, packageModel.Id, item.Quantity));
-            //    });
+                        await _orderRepository.CreateProductAsync(product, cancellationToken);
+                    }
+                    else
+                    {
+                        package = Package.PackageFactory(product.Id, item.TypePackage, item.QuantityPackage);
 
-            //    return documentModel;
-            //}));
+                        if (!product.PackageExists(package))
+                        {
+                            await _orderRepository.AddPackageAsync(package, cancellationToken);
 
-            //await _orderRepository.UpdateOrderAsync(order);
+                            product.AddPackage(package);
+                        }
+                        else
+                        {
+                            package = product.GetPackage(package);
+                        }
+
+                        if (package is null)
+                        {
+                            await _mediatorHandler.PublishNotification(new DomainNotification("Package", $"Falha ao localizar a embalagem {item.TypePackage} {item.QuantityPackage} do item {item.ProductCode} {item.ProductName}"));
+
+                            return false;
+                        }
+
+                        package.DisableAllBarcode();
+
+                        var existsBarcodes = package.GetAllExistingBarcode(item.Barcodes.Select(barcode => new Barcode(package.Id, barcode.Code)));
+
+                        package.ActivateBarcodeRange(existsBarcodes);
+
+                        await _orderRepository.UpdateBarcodeRange(package.Barcodes);
+
+                        var newbarcodes = package.GetAllNewBarcode(item.Barcodes.Select(barcode => new Barcode(package.Id, barcode.Code)));
+
+                        if (newbarcodes.Any())
+                        {
+                            package.AddBarcodeRange(newbarcodes);
+
+                            await _orderRepository.AddBarcodeRangeAsync(newbarcodes, cancellationToken);
+                        }
+                    }
+
+                    documentModel.AddItem(OrderItem.OrderItemFactory(documentModel.Id, product.Id, package.Id, item.Quantity));
+                }
+
+                order.AddDocument(documentModel);
+            }
+
+            await _orderRepository.UpdateOrder(order);
 
             return await _orderRepository.UnityOfWork.Commit();
         }

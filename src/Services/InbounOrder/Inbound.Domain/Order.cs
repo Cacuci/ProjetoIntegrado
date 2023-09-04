@@ -53,19 +53,19 @@ namespace Inbound.Domain
 
         public void RemoveDocument(OrderDocument document)
         {
-            var result = _documents.FirstOrDefault(c => c.Number == document.Number);
-
-            if (result is not null)
-            {
-                _documents.Remove(document);
-            }
+            _documents.Remove(document);
         }
 
-        public void UpdateDocument(IEnumerable<OrderDocument> documents)
+        public OrderDocument? GetDocumentByNumber(string number)
         {
-            _documents.Clear();
+            var document = _documents.FirstOrDefault(document => document.Number == number);
 
-            _documents.AddRange(documents);
+            return document;
+        }
+
+        public static Order OrderFactory(string number, string warehouseCode, DateTime dateCreated)
+        {
+            return new Order(number, warehouseCode, dateCreated);
         }
     }
 }

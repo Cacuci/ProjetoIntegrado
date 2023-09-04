@@ -81,7 +81,7 @@ namespace Inbound.Infrastructure.Repository
             return order;
         }
 
-        public Task UpdateOrderAsync(Order order)
+        public Task UpdateOrder(Order order)
         {
             _context.Orders.Update(order);
 
@@ -112,6 +112,7 @@ namespace Inbound.Infrastructure.Repository
             return product;
         }
 
+
         public async Task<Package?> GetPackageByProductIdAsync(string type, int capacity, CancellationToken cancellationToken = default)
         {
             var package = await _context.Packages.FirstOrDefaultAsync(package => package.Type == type &&
@@ -123,6 +124,11 @@ namespace Inbound.Infrastructure.Repository
         public async Task<Package?> GetPackageByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
             var package = await _context.Packages.FirstOrDefaultAsync(package => package.Id == id, cancellationToken);
+
+            if (package is not null)
+            {
+                await _context.Entry(package).Collection(package => package.Barcodes).LoadAsync();
+            }
 
             return package;
         }
@@ -153,9 +159,30 @@ namespace Inbound.Infrastructure.Repository
             await _context.Packages.AddAsync(package, cancellationToken);
         }
 
-        public async Task AddBarcodeAsync(Barcode barcode, CancellationToken cancellationToken = default)
+        public async Task AddBarcodeRangeAsync(IEnumerable<Barcode> barcodes, CancellationToken cancellationToken = default)
         {
-            await _context.Barcodes.AddAsync(barcode, cancellationToken);
+            await _context.Barcodes.AddRangeAsync(barcodes, cancellationToken);
+        }
+
+        public Task UpdateBarcodeRange(IEnumerable<Barcode> barcodes)
+        {
+            _context.Barcodes.UpdateRange(barcodes);
+
+            return Task.CompletedTask;
+        }
+
+        public Task RemoveRangeDocument(IEnumerable<OrderDocument> documents)
+        {
+            _context.OrderDocuments.RemoveRange(documents);
+
+            return Task.CompletedTask;
+        }
+
+        public Task RemoveRangeItem(IEnumerable<OrderItem> items)
+        {
+            _context.OrderItems.RemoveRange(items);
+
+            return Task.CompletedTask;
         }
 
         public void Dispose() => _context.Dispose();

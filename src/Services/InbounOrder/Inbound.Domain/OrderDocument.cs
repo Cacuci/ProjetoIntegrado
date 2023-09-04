@@ -53,11 +53,9 @@ namespace Inbound.Domain
             }
         }
 
-        public void UpdateItem(IEnumerable<OrderItem> items)
+        public static OrderDocument OrderDocumentFactory(Guid orderId, string number)
         {
-            _items.Clear();
-
-            _items.AddRange(items);
+            return new OrderDocument(orderId, number);
         }
     }
 }

@@ -25,6 +25,6 @@ namespace Inbound.Application.Queries.DTOs
         public decimal Quantity { get; set; }
 
         [Required(ErrorMessage = "Campo obrigatório não fornecido")]
-        public IEnumerable<OrderBarcode> Barcodes { get; set; }
+        public IEnumerable<BarcodeRequestDTO> Barcodes { get; set; }
     }
 }
