@@ -4,22 +4,23 @@ using Inbound.Application.Commands;
 using Inbound.Application.Queries;
 using Inbound.Application.Queries.DTOs;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Inbound.API.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/orders")]
     public class OrdersController : ControllerBase
     {
         private readonly IOrderQueries _orderQueries;
-        private readonly IMediatorHandler _mediator;
+        private readonly IMediatorHandler _mediatorHandler;
 
-        public OrdersController(IOrderQueries orderQueries, INotificationHandler<DomainNotification> notification, IMediatorHandler mediator) : base(notification, mediator)
+        public OrdersController(IOrderQueries orderQueries, INotificationHandler<DomainNotification> notification, IMediatorHandler mediatorHandler) : base(notification, mediatorHandler)
         {
             _orderQueries = orderQueries;
-            _mediator = mediator;
+            _mediatorHandler = mediatorHandler;
         }
 
         [HttpGet]
@@ -29,7 +30,7 @@ namespace Inbound.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<OrderResponseDTO>> GetOrderAll(CancellationToken cancellationToken)
         {
-            var warehouses = await _orderQueries.GetorderAllAsync(cancellationToken);
+            var warehouses = await _orderQueries.GetOrderAllAsync(cancellationToken);
 
             if (!warehouses.Any())
             {
@@ -84,7 +85,7 @@ namespace Inbound.API.Controllers
             {
                 var command = new CreateOrderCommand(request);
 
-                await _mediator.SendCommand(command);
+                await _mediatorHandler.SendCommand(command);
 
                 if (!OperationValid())
                 {
@@ -110,7 +111,7 @@ namespace Inbound.API.Controllers
             {
                 var commad = new UpdateOrderCommand(id, request);
 
-                await _mediator.SendCommand(commad);
+                await _mediatorHandler.SendCommand(commad);
 
                 if (!OperationValid())
                 {

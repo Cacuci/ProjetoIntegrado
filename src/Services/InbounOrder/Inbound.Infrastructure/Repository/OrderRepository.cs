@@ -7,9 +7,9 @@ namespace Inbound.Infrastructure.Repository
 {
     public class OrderRepository : IOrderRepository
     {
-        public IUnityOfWork UnityOfWork => _context;
-
         private readonly InboundDataContext _context;
+
+        public IUnityOfWork UnityOfWork => _context;
 
         public OrderRepository(InboundDataContext context)
         {
@@ -29,7 +29,7 @@ namespace Inbound.Infrastructure.Repository
 
         public async Task<IEnumerable<Order?>> GetAllOrdersAsync(CancellationToken cancellationToken = default)
         {
-            var orders = await _context.Orders.ToListAsync(cancellationToken);
+            var orders = await _context.Orders.AsNoTracking().ToListAsync(cancellationToken);
 
             if (orders.Any())
             {

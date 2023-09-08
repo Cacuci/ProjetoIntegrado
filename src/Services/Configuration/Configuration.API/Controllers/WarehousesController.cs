@@ -11,7 +11,7 @@ namespace Configuration.API.Controllers
 {
     [Authorize]
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/warehouses")]
     public class WarehousesController : ControllerBase
     {
         private readonly IWarehouseQueries _warehouseQueries;

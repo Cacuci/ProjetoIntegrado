@@ -23,7 +23,6 @@ namespace Inbound.API.Setup
             services.AddTransient<IOrderQueries, OrderQueries>();
             services.AddTransient<IRequestHandler<UpdateOrderCommand, bool>, OrderCommandHandler>();
             services.AddTransient<IRequestHandler<CreateOrderCommand, bool>, OrderCommandHandler>();
-            //services.AddTransient<IRequestHandler<DeleteOrderCommand, bool>, OrderCommandHandler>();
         }
     }
 }

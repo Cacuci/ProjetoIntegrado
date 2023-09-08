@@ -24,33 +24,6 @@ namespace Inbound.Infrastructure.Context
             _mediatorHandler = mediatorHandler;
         }
 
-        public async Task<bool> Commit()
-        {
-            foreach (var entry in ChangeTracker.Entries()
-                                               .Where(entry => entry.Entity.GetType()
-                                               .GetProperty("DateRegister") != null))
-            {
-                if (entry.State == EntityState.Added)
-                {
-                    entry.Property("DateRegister").CurrentValue = DateTime.Now;
-                }
-
-                if (entry.State == EntityState.Modified)
-                {
-                    entry.Property("DateRegister").IsModified = false;
-                }
-            }
-
-            bool success = await base.SaveChangesAsync() > 0;
-
-            if (success)
-            {
-                await _mediatorHandler.PublishEvents(this);
-            }
-
-            return success;
-        }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             foreach (var entity in modelBuilder.Model.GetEntityTypes())
@@ -107,6 +80,33 @@ namespace Inbound.Infrastructure.Context
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(InboundDataContext).Assembly);
 
             base.OnModelCreating(modelBuilder);
+        }
+
+        public async Task<bool> Commit()
+        {
+            foreach (var entry in ChangeTracker.Entries()
+                                               .Where(entry => entry.Entity.GetType()
+                                               .GetProperty("DateRegister") != null))
+            {
+                if (entry.State == EntityState.Added)
+                {
+                    entry.Property("DateRegister").CurrentValue = DateTime.Now;
+                }
+
+                if (entry.State == EntityState.Modified)
+                {
+                    entry.Property("DateRegister").IsModified = false;
+                }
+            }
+
+            bool success = await base.SaveChangesAsync() > 0;
+
+            if (success)
+            {
+                await _mediatorHandler.PublishEvents(this);
+            }
+
+            return success;
         }
     }
 }
