@@ -1,13 +1,13 @@
 ﻿using Core.Messages;
 using FluentValidation;
-using Inbound.Application.Queries.DTOs;
+using Inbound.Application.DTOs;
 
 namespace Inbound.Application.Commands
 {
     public class UpdateOrderCommand : Command
     {
-        public Guid Id { get; set; }
-        public OrderRequestDTO Order { get; set; }
+        public Guid Id { get; private set; }
+        public OrderRequestDTO Order { get; private set; }
 
         public UpdateOrderCommand(Guid id, OrderRequestDTO order)
         {

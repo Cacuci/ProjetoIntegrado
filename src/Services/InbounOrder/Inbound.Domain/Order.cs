@@ -4,17 +4,15 @@ namespace Inbound.Domain
 {
     public class Order : Entity, IAggregateRoot
     {
-        public Order(string number, string warehouseCode, DateTime dateCreated)
+        public Order(string number, string warehouseCode)
         {
             Number = number;
             WarehouseCode = warehouseCode;
-            DateCreated = dateCreated;
             _documents = new List<OrderDocument>();
         }
 
         public string Number { get; private set; }
         public string WarehouseCode { get; private set; }
-        public DateTime DateCreated { get; private set; }
         public DateTime DateRegister { get; private set; }
 
         private readonly List<OrderDocument> _documents;
@@ -63,9 +61,9 @@ namespace Inbound.Domain
             return document;
         }
 
-        public static Order OrderFactory(string number, string warehouseCode, DateTime dateCreated)
+        public static Order OrderFactory(string number, string warehouseCode)
         {
-            return new Order(number, warehouseCode, dateCreated);
+            return new Order(number, warehouseCode);
         }
     }
 }

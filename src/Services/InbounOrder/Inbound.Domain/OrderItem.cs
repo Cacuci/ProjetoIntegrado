@@ -16,6 +16,7 @@ namespace Inbound.Domain
         public Guid ProductId { get; private set; }
         public Guid PackageId { get; private set; }
         public decimal Quantity { get; private set; }
+        public DateTime DateRegister { get; private set; }
 
         public void UpdateQuantity(decimal quantity)
         {

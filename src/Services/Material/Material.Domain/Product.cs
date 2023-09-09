@@ -14,7 +14,6 @@ namespace Material.Domain
         public string Code { get; set; }
         public string Name { get; set; }
         public bool Active { get; set; }
-        public DateTime DateCreated { get; private set; } = DateTime.UtcNow;
         public DateTime DateRegister { get; private set; }
 
         public void Activate(bool active)

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Configuration.Application.Queries.DTOs.User
+namespace Configuration.Application.DTOs.User
 {
     public class UserResponseDTO
     {

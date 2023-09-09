@@ -1,6 +1,8 @@
 ﻿using Core.Communication.Mediator;
+using Core.Extensions;
 using Core.Messages;
 using Core.Messages.CommonMessages.Notifications;
+using Material.Application.Events;
 using Material.Domain;
 using MediatR;
 
@@ -48,6 +50,10 @@ namespace Material.Application.Commands
             {
                 await _materialRepository.AddProductRangeAsync(newProducts, cancellationToken);
             }
+
+            _ = products.Union(newProducts);
+
+            products.ForEach(item => item.AddEvent(new UpdatedProductEvent(item.Id, item.Code, item.Name, item.Active)));
 
             return await _materialRepository.UnityOfWork.Commit();
         }

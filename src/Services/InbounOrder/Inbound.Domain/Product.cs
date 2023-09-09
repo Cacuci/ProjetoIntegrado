@@ -14,6 +14,7 @@ namespace Inbound.Domain
         public string Code { get; private set; }
         public string Name { get; private set; }
         public bool Active { get; private set; } = true;
+        public DateTime DateRegister { get; private set; }
 
         private readonly List<Package> _packages;
         public IReadOnlyCollection<Package> Packages => _packages;

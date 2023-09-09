@@ -34,8 +34,7 @@ namespace Inbound.Application.Commands
                 return false;
             }
 
-            order = Order.OrderFactory(request.Order.Number, request.Order.WarehouseCode,
-                                       request.Order.DateCreated.Value);
+            order = Order.OrderFactory(request.Order.Number, request.Order.WarehouseCode);
 
             foreach (var document in request.Order.Documents)
             {

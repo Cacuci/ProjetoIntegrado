@@ -1,4 +1,4 @@
-﻿using Configuration.Application.Queries.DTOs.Warehouse;
+﻿using Configuration.Application.DTOs.Warehouse;
 using Configuration.Domain;
 
 namespace Configuration.Application.Queries

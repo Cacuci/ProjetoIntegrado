@@ -1,4 +1,4 @@
-﻿using Configuration.Application.Queries.DTOs.User;
+﻿using Configuration.Application.DTOs.User;
 using Configuration.Domain;
 
 namespace Configuration.Application.Queries

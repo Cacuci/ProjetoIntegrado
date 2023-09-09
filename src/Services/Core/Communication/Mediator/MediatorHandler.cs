@@ -15,7 +15,7 @@ namespace Core.Communication.Mediator
 
         public async Task PublishEvent<T>(T @event) where T : Event
         {
-            await _mediator.Send(@event);
+            await _mediator.Publish(@event);
         }
 
         public async Task PublishNotification<T>(T notification) where T : DomainNotification

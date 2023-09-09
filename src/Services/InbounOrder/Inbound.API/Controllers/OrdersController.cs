@@ -1,8 +1,8 @@
 ﻿using Core.Communication.Mediator;
 using Core.Messages.CommonMessages.Notifications;
 using Inbound.Application.Commands;
+using Inbound.Application.DTOs;
 using Inbound.Application.Queries;
-using Inbound.Application.Queries.DTOs;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

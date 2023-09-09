@@ -6,9 +6,9 @@ namespace Configuration.Application.Commands
 {
     public class CreateUserCommand : Command
     {
-        public string Name { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
+        public string Name { get; private set; }
+        public string Email { get; private set; }
+        public string Password { get; private set; }
 
         public CreateUserCommand(string name, string email, string password)
         {

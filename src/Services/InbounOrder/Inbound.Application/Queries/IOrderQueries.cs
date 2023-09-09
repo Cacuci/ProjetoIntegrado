@@ -1,4 +1,4 @@
-﻿using Inbound.Application.Queries.DTOs;
+﻿using Inbound.Application.DTOs;
 
 namespace Inbound.Application.Queries
 {

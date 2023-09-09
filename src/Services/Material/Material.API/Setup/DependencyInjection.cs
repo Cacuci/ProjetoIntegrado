@@ -1,6 +1,7 @@
 ﻿using Core.Communication.Mediator;
 using Core.Messages.CommonMessages.Notifications;
 using Material.Application.Commands;
+using Material.Application.Events;
 using Material.Application.Queries;
 using Material.Domain;
 using Material.Infrastructure.Repository;
@@ -22,6 +23,7 @@ namespace Material.API.Setup
             services.AddTransient<IMaterialRepository, MaterialRespository>();
             services.AddTransient<IMaterialQueries, MaterialQueries>();
             services.AddTransient<IRequestHandler<UpdateProductCommand, bool>, MaterialCommandHandler>();
+            services.AddTransient<INotificationHandler<UpdatedProductEvent>, MaterialEventHandler>();
         }
     }
 }

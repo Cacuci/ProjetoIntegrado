@@ -6,8 +6,8 @@ namespace Configuration.Application.Commands
 {
     public class CreateWarehouseCommand : Command
     {
-        public string Code { get; set; }
-        public string Name { get; set; }
+        public string Code { get; private set; }
+        public string Name { get; private set; }
 
         public CreateWarehouseCommand(string code, string name)
         {

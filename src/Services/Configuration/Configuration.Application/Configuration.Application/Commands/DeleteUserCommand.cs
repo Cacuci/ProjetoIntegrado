@@ -5,7 +5,7 @@ namespace Configuration.Application.Commands
 {
     public class DeleteUserCommand : Command
     {
-        public string ID { get; set; }
+        public string ID { get; private set; }
 
         public DeleteUserCommand(string iD)
         {

@@ -13,6 +13,7 @@ namespace Inbound.Domain
         public Guid PackageId { get; set; }
         public string Code { get; set; }
         public bool Active { get; set; } = true;
+        public DateTime DateRegister { get; private set; }
 
         public void Activate(bool active)
         {

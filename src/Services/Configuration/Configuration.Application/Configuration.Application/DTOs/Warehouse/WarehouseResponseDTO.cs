@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Configuration.Application.Queries.DTOs.Warehouse
+namespace Configuration.Application.DTOs.Warehouse
 {
     public class WarehouseResponseDTO
     {

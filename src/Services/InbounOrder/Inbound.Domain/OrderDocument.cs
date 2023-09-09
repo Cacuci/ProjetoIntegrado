@@ -13,6 +13,7 @@ namespace Inbound.Domain
 
         public Guid OrderId { get; private set; }
         public string Number { get; private set; }
+        public DateTime DateRegister { get; private set; }
 
         private readonly List<OrderItem> _items;
         public IEnumerable<OrderItem> Items => _items;

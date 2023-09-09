@@ -1,12 +1,12 @@
 ﻿using Core.Messages;
 using FluentValidation;
-using Inbound.Application.Queries.DTOs;
+using Inbound.Application.DTOs;
 
 namespace Inbound.Application.Commands
 {
     public class CreateOrderCommand : Command
     {
-        public OrderRequestDTO Order { get; set; }
+        public OrderRequestDTO Order { get; private set; }
 
         public CreateOrderCommand(OrderRequestDTO order)
         {

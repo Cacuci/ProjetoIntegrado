@@ -1,4 +1,4 @@
-﻿using Inbound.Application.Queries.DTOs;
+﻿using Inbound.Application.DTOs;
 using Inbound.Domain;
 
 namespace Inbound.Application.Queries
@@ -21,7 +21,7 @@ namespace Inbound.Application.Queries
                 orderId: order.Id,
                 number: order.Number,
                 warehouseCode: order.WarehouseCode,
-                dateCreated: order.DateCreated,
+                dateCreated: order.DateRegister,
                 documents: order.Documents.Select(document =>
                 new OrderDocumentResponseDTO(
                     id: document.Id,
@@ -59,7 +59,7 @@ namespace Inbound.Application.Queries
             return new OrderResponseDTO(orderId: order.Id,
                                         number: order.Number,
                                         warehouseCode: order.WarehouseCode,
-                                        dateCreated: order.DateCreated,
+                                        dateCreated: order.DateRegister,
                                         documents: order.Documents.Select(document => new OrderDocumentResponseDTO
                                         (
                                             id: document.Id,
@@ -95,7 +95,7 @@ namespace Inbound.Application.Queries
             return new OrderResponseDTO(orderId: order.Id,
                                         number: order.Number,
                                         warehouseCode: order.WarehouseCode,
-                                        dateCreated: order.DateCreated,
+                                        dateCreated: order.DateRegister,
                                         documents: order.Documents.Select(document => new OrderDocumentResponseDTO
                                         (
                                             id: document.Id,

@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Core.Messages
 {
-    public class Command : Message, IRequest<bool>
+    public abstract class Command : Message, IRequest<bool>
     {
         public DateTime TimeStamp { get; }
         public ValidationResult ValidationResult { get; set; }

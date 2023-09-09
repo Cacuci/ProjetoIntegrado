@@ -17,6 +17,7 @@ namespace Inbound.Domain
         public string Type { get; private set; }
         public int Capacity { get; private set; }
         public bool Active { get; private set; } = true;
+        public DateTime DateRegister { get; private set; }
 
         private readonly List<Barcode> _barcodes;
         public IEnumerable<Barcode> Barcodes => _barcodes;
