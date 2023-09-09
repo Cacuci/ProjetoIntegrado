@@ -29,7 +29,7 @@ namespace Inbound.Infrastructure.Repository
 
         public async Task<IEnumerable<Order?>> GetAllOrdersAsync(CancellationToken cancellationToken = default)
         {
-            var orders = await _context.Orders.AsNoTracking().ToListAsync(cancellationToken);
+            var orders = await _context.Orders.ToListAsync(cancellationToken);
 
             if (orders.Any())
             {

@@ -12,9 +12,9 @@ namespace Configuration.Application.Queries
             _warehouseRepository = warehouseRepository;
         }
 
-        public async Task<IEnumerable<WarehouseResponseDTO>> GetWarehouseAllAsync(CancellationToken cancellationToken)
+        public async Task<IEnumerable<WarehouseResponseDTO>> GetAllWarehouseAsync(CancellationToken cancellationToken)
         {
-            var warehouses = await _warehouseRepository.GetWarehouseAllAsync(cancellationToken);
+            var warehouses = await _warehouseRepository.GetAllWarehouseAsync(cancellationToken);
 
             return warehouses.Select(warehouse => new WarehouseResponseDTO(warehouse.Id, warehouse.Code, warehouse.Name));
         }

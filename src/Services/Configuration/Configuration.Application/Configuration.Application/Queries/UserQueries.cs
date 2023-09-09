@@ -12,11 +12,11 @@ namespace Configuration.Application.Queries
             _userRepository = userRepository;
         }
 
-        public async Task<IEnumerable<UserResponseDTO?>> GetUserAll()
+        public async Task<IEnumerable<UserResponseDTO?>> GetAllUser()
         {
             var users = Enumerable.Empty<UserResponseDTO>();
 
-            var result = await _userRepository.GetUserAll();
+            var result = await _userRepository.GetAllUser();
 
             if (result.Any())
             {

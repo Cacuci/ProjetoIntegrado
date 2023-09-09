@@ -48,7 +48,7 @@ namespace Configuration.Infrastructure.Repository
             return user;
         }
 
-        public Task<IEnumerable<User?>> GetUserAll()
+        public Task<IEnumerable<User?>> GetAllUser()
         {
             var users = _userManager.Users.AsNoTracking().AsEnumerable();
 

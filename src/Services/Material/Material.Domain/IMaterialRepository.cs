@@ -4,13 +4,13 @@ namespace Material.Domain
 {
     public interface IMaterialRepository : IRepository<Product>
     {
-        Task AddAsync(Product product, CancellationToken cancellationToken);
-        Task AddRangeAsync(IEnumerable<Product> products, CancellationToken cancellationToken);
-        Task Update(Product product);
-        Task UpdateRange(IEnumerable<Product> products);
-        Task<Product?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
-        Task<Product?> GetByCodeAsync(string code, CancellationToken cancellationToken);
-        Task<IEnumerable<Product>> GetByRange(IEnumerable<Product> products);
-        Task<IEnumerable<Product>> GetAllAsync(CancellationToken cancellationToken);
+        Task AddProductAsync(Product product, CancellationToken cancellationToken);
+        Task AddProductRangeAsync(IEnumerable<Product> products, CancellationToken cancellationToken);
+        Task UpdateProduct(Product product);
+        Task UpdateProductRange(IEnumerable<Product> products);
+        Task<Product?> GetProductByIdAsync(Guid id, CancellationToken cancellationToken);
+        Task<Product?> GetProductByCodeAsync(string code, CancellationToken cancellationToken);
+        Task<IEnumerable<Product>> GetProductRangeAsync(IEnumerable<string> codes, CancellationToken cancellationToken);
+        Task<IEnumerable<Product>> GetAllProductAsync(CancellationToken cancellationToken);
     }
 }

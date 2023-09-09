@@ -8,6 +8,6 @@ namespace Configuration.Domain
         Task UpdateAsync(Warehouse warehouse);
         Task<Warehouse?> GetWarehouseByCodeAsync(string code, CancellationToken cancellationToken = default);
         Task<Warehouse?> GetWarehouseByIdAsync(Guid id, CancellationToken cancellationToken = default);
-        Task<IEnumerable<Warehouse>> GetWarehouseAllAsync(CancellationToken cancellationToken = default);
+        Task<IEnumerable<Warehouse>> GetAllWarehouseAsync(CancellationToken cancellationToken = default);
     }
 }

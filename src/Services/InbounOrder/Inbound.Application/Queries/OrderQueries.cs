@@ -12,7 +12,7 @@ namespace Inbound.Application.Queries
             _orderRepository = orderRepository;
         }
 
-        public async Task<IEnumerable<OrderResponseDTO>> GetOrderAllAsync(CancellationToken cancellationToken)
+        public async Task<IEnumerable<OrderResponseDTO>> GetAllOrderAsync(CancellationToken cancellationToken)
         {
             var orders = await _orderRepository.GetAllOrdersAsync(cancellationToken);
 

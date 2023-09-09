@@ -28,9 +28,9 @@ namespace Inbound.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<OrderResponseDTO>> GetOrderAll(CancellationToken cancellationToken)
+        public async Task<ActionResult<OrderResponseDTO>> GetAllOrder(CancellationToken cancellationToken)
         {
-            var warehouses = await _orderQueries.GetOrderAllAsync(cancellationToken);
+            var warehouses = await _orderQueries.GetAllOrderAsync(cancellationToken);
 
             if (!warehouses.Any())
             {

@@ -6,6 +6,6 @@ namespace Configuration.Application.Queries
     {
         Task<UserResponseDTO?> GetUserById(string id);
         Task<UserResponseDTO?> GetUserByEmail(string email);
-        Task<IEnumerable<UserResponseDTO?>> GetUserAll();
+        Task<IEnumerable<UserResponseDTO?>> GetAllUser();
     }
 }

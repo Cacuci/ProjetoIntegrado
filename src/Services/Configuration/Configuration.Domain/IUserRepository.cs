@@ -9,6 +9,6 @@ namespace Configuration.Domain
         Task DeleteUserAsync(User user);
         Task<User?> GetUserById(string id);
         Task<User?> GetUserByEmail(string email);
-        Task<IEnumerable<User?>> GetUserAll();
+        Task<IEnumerable<User?>> GetAllUser();
     }
 }

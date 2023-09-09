@@ -28,9 +28,9 @@ namespace Configuration.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<WarehouseResponseDTO>> GetWarehouseAll(CancellationToken cancellationToken)
+        public async Task<ActionResult<WarehouseResponseDTO>> GetAllWarehouse(CancellationToken cancellationToken)
         {
-            var warehouses = await _warehouseQueries.GetWarehouseAllAsync(cancellationToken);
+            var warehouses = await _warehouseQueries.GetAllWarehouseAsync(cancellationToken);
 
             if (!warehouses.Any())
             {

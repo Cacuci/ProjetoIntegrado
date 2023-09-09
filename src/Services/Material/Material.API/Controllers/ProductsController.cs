@@ -28,7 +28,7 @@ namespace Material.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<ProductResponseDTO>> GetOrderAll(CancellationToken cancellationToken)
+        public async Task<ActionResult<ProductResponseDTO>> GetAllOrder(CancellationToken cancellationToken)
         {
             var warehouses = await _materialQueries.GetAllAsync(cancellationToken);
 
@@ -92,7 +92,7 @@ namespace Material.API.Controllers
                     return BadRequest(GetMessageError());
                 }
 
-                return Created("api/products/", null);
+                return Ok();
             }
 
             return BadRequest();

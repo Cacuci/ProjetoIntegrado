@@ -21,7 +21,7 @@ namespace Configuration.Infrastructure.Repository
             await _context.Warehouses.AddAsync(warehouse, cancellationToken);
         }
 
-        public async Task<IEnumerable<Warehouse>> GetWarehouseAllAsync(CancellationToken cancellationToken)
+        public async Task<IEnumerable<Warehouse>> GetAllWarehouseAsync(CancellationToken cancellationToken)
         {
             var warehouses = await _context.Warehouses.AsNoTracking().ToListAsync(cancellationToken);
 

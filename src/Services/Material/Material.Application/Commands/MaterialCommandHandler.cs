@@ -24,13 +24,13 @@ namespace Material.Application.Commands
                 return false;
             }
 
-            var products = await _materialRepository.GetByRange(request.Products.Select(product => Product.ProductFactory(product.Code, product.Name)));
+            var products = await _materialRepository.GetProductRangeAsync(request.Products.Select(item => item.Code), cancellationToken);
 
             if (products.Any())
             {
                 foreach (var item in products)
                 {
-                    var product = request.Products.SingleOrDefault(product => product.Code == item.Code);
+                    var product = request.Products.FirstOrDefault(product => product.Code == item.Code);
 
                     if (product != null)
                     {
@@ -38,7 +38,7 @@ namespace Material.Application.Commands
                     }
                 }
 
-                await _materialRepository.UpdateRange(products);
+                await _materialRepository.UpdateProductRange(products);
             }
 
             var newProducts = request.Products.ExceptBy(products.Select(c => new { c.Code }), d => new { d.Code })
@@ -46,7 +46,7 @@ namespace Material.Application.Commands
 
             if (newProducts.Any())
             {
-                await _materialRepository.AddRangeAsync(newProducts, cancellationToken);
+                await _materialRepository.AddProductRangeAsync(newProducts, cancellationToken);
             }
 
             return await _materialRepository.UnityOfWork.Commit();

@@ -6,6 +6,6 @@ namespace Configuration.Application.Queries
     {
         public Task<WarehouseResponseDTO?> GetWarehouseByIdAsync(Guid id, CancellationToken cancellationToken);
         public Task<WarehouseResponseDTO?> GetWarehouseByCodeAsync(string code, CancellationToken cancellationToken);
-        public Task<IEnumerable<WarehouseResponseDTO>> GetWarehouseAllAsync(CancellationToken cancellationToken);
+        public Task<IEnumerable<WarehouseResponseDTO>> GetAllWarehouseAsync(CancellationToken cancellationToken);
     }
 }

@@ -29,9 +29,9 @@ namespace Configuration.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<UserResponseDTO>> GetUserAll()
+        public async Task<ActionResult<UserResponseDTO>> GetAllUser()
         {
-            var users = await _userQueries.GetUserAll();
+            var users = await _userQueries.GetAllUser();
 
             if (!users.Any())
             {

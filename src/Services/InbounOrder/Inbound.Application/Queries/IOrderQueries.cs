@@ -6,6 +6,6 @@ namespace Inbound.Application.Queries
     {
         public Task<OrderResponseDTO?> GetOrderByIdAsync(Guid id, CancellationToken cancellationToken);
         public Task<OrderResponseDTO?> GetOrderByNumberAsync(string number, CancellationToken cancellationToken);
-        public Task<IEnumerable<OrderResponseDTO>> GetOrderAllAsync(CancellationToken cancellationToken);
+        public Task<IEnumerable<OrderResponseDTO>> GetAllOrderAsync(CancellationToken cancellationToken);
     }
 }

@@ -16,59 +16,64 @@ namespace Material.Infrastructure.Repository
             _context = context;
         }
 
-        public async Task AddAsync(Product product, CancellationToken cancellationToken)
+        public async Task AddProductAsync(Product product, CancellationToken cancellationToken)
         {
             await _context.Products.AddAsync(product, cancellationToken);
         }
 
-        public async Task<IEnumerable<Product>> GetAllAsync(CancellationToken cancellationToken)
+        public async Task<IEnumerable<Product>> GetAllProductAsync(CancellationToken cancellationToken)
         {
             var products = await _context.Products.AsNoTracking().ToListAsync(cancellationToken);
 
             return products;
         }
 
-        public async Task<Product?> GetByCodeAsync(string code, CancellationToken cancellationToken)
+        public async Task<Product?> GetProductByCodeAsync(string code, CancellationToken cancellationToken)
         {
             var product = await _context.Products.SingleOrDefaultAsync(product => product.Code == code, cancellationToken);
 
             return product;
         }
 
-        public async Task<Product?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+        public async Task<Product?> GetProductByIdAsync(Guid id, CancellationToken cancellationToken)
         {
             var product = await _context.Products.SingleOrDefaultAsync(product => product.Id == id, cancellationToken);
 
             return product;
         }
 
-        public Task Update(Product product)
+        public Task UpdateProduct(Product product)
         {
             _context.Products.Update(product);
 
             return Task.CompletedTask;
         }
 
-        public Task<IEnumerable<Product>> GetByRange(IEnumerable<Product> products)
+        public async Task<IEnumerable<Product>> GetProductRangeAsync(IEnumerable<string> codes, CancellationToken cancellationToken)
         {
-            var result = _context.Products.AsEnumerable()
-                                          .Join(products,
-                                                c => c.Code,
-                                                d => d.Code,
-                                                (c, d) => new Product(d.Code, d.Name, d.Active));
+            var products = Enumerable.Empty<Product>().ToList();
 
-            return Task.FromResult(result);
+            foreach (var code in codes)
+            {
+                var product = await _context.Products.SingleOrDefaultAsync(c => c.Code == code, cancellationToken);
 
+                if (product is not null)
+                {
+                    products.Add(product);
+                }
+            }
+
+            return products;
         }
 
-        public Task UpdateRange(IEnumerable<Product> products)
+        public Task UpdateProductRange(IEnumerable<Product> products)
         {
             _context.Products.UpdateRange(products);
 
             return Task.CompletedTask;
         }
 
-        public async Task AddRangeAsync(IEnumerable<Product> products, CancellationToken cancellationToken)
+        public async Task AddProductRangeAsync(IEnumerable<Product> products, CancellationToken cancellationToken)
         {
             await _context.Products.AddRangeAsync(products, cancellationToken);
         }
