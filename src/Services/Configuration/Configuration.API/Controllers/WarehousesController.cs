@@ -1,5 +1,6 @@
-﻿using Configuration.API.DTOs.Warehouse;
-using Configuration.Domain;
+﻿using Configuration.Application.Commands;
+using Configuration.Application.DTOs.Warehouse;
+using Configuration.Application.Queries;
 using Core.Communication.Mediator;
 using Core.Messages.CommonMessages.Notifications;
 using MediatR;
@@ -10,17 +11,15 @@ namespace Configuration.API.Controllers
 {
     [Authorize]
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/warehouses")]
     public class WarehousesController : ControllerBase
     {
-        private readonly IWarehouseRepository _warehouseRepository;
+        private readonly IWarehouseQueries _warehouseQueries;
         private readonly IMediatorHandler _mediator;
-        private readonly INotificationHandler<DomainNotification> _notification;
 
-        public WarehousesController(IWarehouseRepository warehouseRepository, INotificationHandler<DomainNotification> notification, IMediatorHandler mediator) : base(notification, mediator)
+        public WarehousesController(IWarehouseQueries warehouseQueries, INotificationHandler<DomainNotification> notification, IMediatorHandler mediator) : base(notification, mediator)
         {
-            _warehouseRepository = warehouseRepository;
-            _notification = (DomainNotificationHandler)notification;
+            _warehouseQueries = warehouseQueries;
             _mediator = mediator;
         }
 
@@ -29,18 +28,16 @@ namespace Configuration.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<WarehouseResponseDTO>> GetWarehouseAll(CancellationToken cancellationToken)
+        public async Task<ActionResult<WarehouseResponseDTO>> GetAllWarehouse(CancellationToken cancellationToken)
         {
-            var warehouses = await _warehouseRepository.GetWarehouseAllAsync(cancellationToken);
+            var warehouses = await _warehouseQueries.GetAllWarehouseAsync(cancellationToken);
 
-            if (warehouses is not null)
+            if (!warehouses.Any())
             {
-                var response = warehouses.Select(warehouse => new WarehouseResponseDTO(warehouse.Id, warehouse.Code, warehouse.Name));
-
-                return Ok(response);
+                return NotFound();
             }
 
-            return NotFound();
+            return Ok(warehouses);
         }
 
         [HttpGet("{id}")]
@@ -50,44 +47,37 @@ namespace Configuration.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<WarehouseResponseDTO>> GetWarehouseByID(Guid id, CancellationToken cancellationToken)
         {
-            var warehouse = await _warehouseRepository.GetWarehouseByIdAsync(id, cancellationToken);
+            var warehouse = await _warehouseQueries.GetWarehouseByIdAsync(id, cancellationToken);
 
-            if (warehouse is not null)
+            if (warehouse is null)
             {
-                var response = new WarehouseResponseDTO(warehouse.Id, warehouse.Code, warehouse.Name);
-
-                return Ok(response);
+                return NotFound();
             }
 
-            return NotFound();
+            return Ok(warehouse);
         }
-
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public async Task<ActionResult<string>> CreateWarehouse([FromBody] WarehouseRequestDTO request)
+        public async Task<ActionResult<string>> CreateWarehouse([FromBody] WarehouseRequestDTO request, CancellationToken cancellationToken)
         {
             if (ModelState.IsValid)
             {
-                var warehouse = await _warehouseRepository.GetWarehouseByCodeAsync(request.Code);
+                var command = new CreateWarehouseCommand(request.Code, request.Name);
 
-                if (warehouse is null)
+                await _mediator.SendCommand(command);
+
+                if (!OperationValid())
                 {
-                    var warehouseModel = new Warehouse(request.Code, request.Name);
-
-                    await _warehouseRepository.CreateWarehouseAsync(warehouseModel);
-
-                    await _warehouseRepository.UnityOfWork.Commit();
-
-                    warehouse = await _warehouseRepository.GetWarehouseByCodeAsync(warehouseModel.Code);
-
-                    return Created("api/warehouses/{id}", warehouse.Id);
+                    return BadRequest(GetMessageError());
                 }
 
-                return BadRequest("Deposito já cadastrado");
+                var warehouse = await _warehouseQueries.GetWarehouseByCodeAsync(request.Code, cancellationToken);
+
+                return Created("api/warehouses/{id}", warehouse.Id);
             }
 
             return BadRequest();
@@ -98,26 +88,22 @@ namespace Configuration.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public async Task<ActionResult> UpdateWarehouse(Guid id, [FromBody] WarehouseRequestDTO request)
+        public async Task<ActionResult> UpdateWarehouse(Guid id, [FromBody] WarehouseRequestDTO request, CancellationToken cancellationToken)
         {
             if (ModelState.IsValid)
             {
-                var warehouse = await _warehouseRepository.GetWarehouseByIdAsync(id);
+                var commad = new UpdateWarehouseCommand(id, request.Code, request.Name);
 
-                if (warehouse is not null)
+                await _mediator.SendCommand(commad);
+
+                if (!OperationValid())
                 {
-                    warehouse.UpdateName(request.Name);
-
-                    warehouse.UpdateCode(request.Code);
-
-                    await _warehouseRepository.UpdateAsync(warehouse);
-
-                    await _warehouseRepository.UnityOfWork.Commit();
-
-                    return Ok(warehouse.Id);
+                    return NotFound(GetMessageError());
                 }
 
-                return BadRequest("Deposito não encontrado");
+                var warehouse = await _warehouseQueries.GetWarehouseByIdAsync(id, cancellationToken);
+
+                return Ok(warehouse?.Id);
             }
 
             return BadRequest();

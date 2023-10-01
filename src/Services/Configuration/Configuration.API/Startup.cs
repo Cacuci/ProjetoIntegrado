@@ -1,6 +1,6 @@
 ﻿using Configuration.API.Setup;
 using Configuration.Domain;
-using Configuration.Repository.Context;
+using Configuration.Infrastructure.Context;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
