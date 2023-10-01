@@ -29,6 +29,7 @@
 
   <ItemGroup>
     <Folder Include="Events\" />
+    <Folder Include="Events\" />
   </ItemGroup>
 
 </Project>
