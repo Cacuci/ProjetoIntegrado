@@ -17,6 +17,15 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(setup =>
 {
     setup.SwaggerDoc("v1", new OpenApiInfo { Title = "Identity", Version = "v1", Description = "Aplicação de identidade baseado no padrão OpenID Connect. A documentação encontra-se disponível em /.well-known/openid-configuration, onde você pode encontrar metadados e links para todos os endpoints." });
+
+    setup.CustomSchemaIds(s => s.ToString());
+
+    var path = AppContext.BaseDirectory;
+
+    foreach (var name in Directory.GetFiles(path, "*.xml"))
+    {
+        setup.IncludeXmlComments(filePath: name);
+    }
 });
 
 builder.Services.AddIdentity<User, IdentityRole>()

@@ -23,10 +23,24 @@ namespace Inbound.API.Controllers
             _mediatorHandler = mediatorHandler;
         }
 
+        /// <summary>
+        /// Obtém a lista de ordens de entrada
+        /// </summary>        
+        /// <remarks>
+        /// Está API pode ser usada para retornar as ordens de entrada.
+        ///
+        /// Não há parâmetros obrigatórios para esta API.
+        ///
+        /// Somente usuários autenticados podem acessar este recurso.        
+        /// </remarks>
+        /// <response code="200">Se a requisição foi bem sucedida</response>        
+        /// <response code="401">Se o servidor não entendeu a requisição (Usuário não identificado)</response>  
+        /// <response code="403">Se o servidor não entendeu a requisição (Usuário não autorizado)</response>    
+        /// <response code="404">Se o servidor não encontrar o que foi pedido</response>    
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<OrderResponseDTO>> GetAllOrder(CancellationToken cancellationToken)
         {
@@ -40,10 +54,24 @@ namespace Inbound.API.Controllers
             return Ok(warehouses);
         }
 
+        /// <summary>
+        /// Obtém a ordem específica
+        /// </summary>        
+        /// <remarks>
+        /// Está API pode ser usada para retornar a ordem específica.
+        ///
+        /// Você precisa passar o ID de identificação do depósito na URL para a chamada bem-sucedida. Nenhum outro parâmetro no corpo da requisição é necessário.
+        ///
+        /// Somente usuários autenticados podem acessar este recurso.        
+        /// </remarks>
+        /// <response code="200">Se a requisição foi bem sucedida</response>        
+        /// <response code="401">Se o servidor não entendeu a requisição (Usuário não identificado)</response>  
+        /// <response code="403">Se o servidor não entendeu a requisição (Usuário não autorizado)</response>    
+        /// <response code="404">Se o servidor não encontrar o que foi pedido</response>    
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<OrderResponseDTO>> GetOrderByID(Guid id, CancellationToken cancellationToken)
         {
@@ -57,23 +85,18 @@ namespace Inbound.API.Controllers
             return Ok(warehouse);
         }
 
-        //[HttpGet("{number}")]
-        //[ProducesResponseType(StatusCodes.Status200OK)]
-        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
-        //[ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        //[ProducesResponseType(StatusCodes.Status404NotFound)]
-        //public async Task<ActionResult<OrderResponseDTO>> GetOrderByNumber(string number, CancellationToken cancellationToken)
-        //{
-        //    var warehouse = await _orderQueries.GetOrderByNumberAsync(number, cancellationToken);
-
-        //    if (warehouse is null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return Ok(warehouse);
-        //}
-
+        /// <summary>
+        /// Realiza o cadastro da ordem
+        /// </summary>
+        /// <remarks>
+        /// Use esta API para realizar o cadastramento da ordem. Todos os detalhes devem ser passados no corpo da requisição.
+        ///
+        /// Somente usuários autenticados podem acessar este recurso.        
+        /// </remarks>        
+        /// <response code="201">Se a requisição foi bem sucedida</response>
+        /// <response code="400">Se o servidor não entendeu a requisição</response>                      
+        /// <response code="401">Se o servidor não entendeu a requisição (Usuário não identificado)</response>  
+        /// <response code="403">Se o servidor não entendeu a requisição (Usuário não autorizado)</response>    
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -100,12 +123,24 @@ namespace Inbound.API.Controllers
             return BadRequest();
         }
 
+        /// <summary>
+        /// Realiza a atualização de uma ordem expecífica
+        /// </summary>
+        /// <remarks>
+        /// Use esta API para realizar a atualização de uma ordem expecífica. Todos os detalhes devem ser passados no corpo da requisição.
+        ///
+        /// Somente usuários autenticados podem acessar este recurso.        
+        /// </remarks>        
+        /// <response code="200">Se a requisição foi bem sucedida</response>        
+        /// <response code="401">Se o servidor não entendeu a requisição (Usuário não identificado)</response>  
+        /// <response code="403">Se o servidor não entendeu a requisição (Usuário não autorizado)</response>    
+        /// <response code="404">Se o servidor não encontrar o que foi pedido</response>    
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public async Task<ActionResult> UpdateWarehouse(Guid id, [FromBody] OrderRequestDTO request, CancellationToken cancellationToken)
+        public async Task<ActionResult> UpdateOrder(Guid id, [FromBody] OrderRequestDTO request, CancellationToken cancellationToken)
         {
             if (ModelState.IsValid)
             {

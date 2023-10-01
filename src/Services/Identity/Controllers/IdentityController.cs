@@ -19,6 +19,14 @@ namespace Identity.Controllers
             _tools = tools;
         }
 
+        /// <summary>
+        /// Realiza a autenticação do usuário
+        /// </summary>
+        /// <remarks>
+        /// Use esta API para realizar a autenticação do usuário. Todos os detalhes devem ser passados no corpo da requisição.        
+        /// </remarks>        
+        /// <response code="200">Se a requisição foi bem sucedida</response>
+        /// <response code="400">Se o servidor não entendeu a requisição</response>                              
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

@@ -12,6 +12,15 @@ namespace Configuration.API.Setup
             services.AddSwaggerGen(setup =>
             {
                 setup.SwaggerDoc("v1", new OpenApiInfo { Title = "Configuration", Version = "v1", Description = "# Formatos\n\r Todos os recursos são acessíveis em formato JSON. O tipo de formato\r\n obrigatório pode ser passado no cabeçalho da solicitação em Content-Type, por padrão o formato application/json\r\n será usado em application/type.\r\n# Autenticação \r\n Todos os recursos da API precisam ser autenticados por um token de portador JWT (JWT bearer).\r\n O token do portador (JWT bearer) precisa ser passado no cabeçalho da solicitação ao fazer qualquer\r\n solicitação que pode exigir autenticação. O token de acesso JWT é válido apenas por um período de tempo finito. Usar um JWT expirado fará com que as operações falhem.  \r\n # Erros\n\r A API usa códigos de status HTTP para indicar o sucesso ou falha de uma chamada de API. Em geral, os códigos de status no intervalo 2xx significam sucesso, o intervalo 4xx significa que houve um erro nas informações fornecidas e aqueles no intervalo 5xx indicam erros do lado do servidor." });
+
+                setup.CustomSchemaIds(s => s.ToString());
+
+                var path = AppContext.BaseDirectory;
+
+                foreach (var name in Directory.GetFiles(path, "*.xml"))
+                {
+                    setup.IncludeXmlComments(filePath: name);
+                }
             });
 
             services.AddSwaggerGen(setup =>

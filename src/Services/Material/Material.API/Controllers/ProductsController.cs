@@ -23,10 +23,24 @@ namespace Material.API.Controllers
             _mediatorHandler = mediatorHandler;
         }
 
+        /// <summary>
+        /// Obtém a lista de produtos
+        /// </summary>        
+        /// <remarks>
+        /// Está API pode ser usada para retornar os produtos.
+        ///
+        /// Não há parâmetros obrigatórios para esta API.
+        ///
+        /// Somente usuários autenticados podem acessar este recurso.        
+        /// </remarks>
+        /// <response code="200">Se a requisição foi bem sucedida</response>        
+        /// <response code="401">Se o servidor não entendeu a requisição (Usuário não identificado)</response>  
+        /// <response code="403">Se o servidor não entendeu a requisição (Usuário não autorizado)</response>    
+        /// <response code="404">Se o servidor não encontrar o que foi pedido</response>    
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ProductResponseDTO>> GetAllOrder(CancellationToken cancellationToken)
         {
@@ -40,10 +54,24 @@ namespace Material.API.Controllers
             return Ok(warehouses);
         }
 
+        /// <summary>
+        /// Obtém um produto específico
+        /// </summary>        
+        /// <remarks>
+        /// Está API pode ser usada para retornar um produto específico.
+        ///
+        /// Você precisa passar o ID de identificação do produto na URL para a chamada bem-sucedida. Nenhum outro parâmetro no corpo da requisição é necessário.
+        ///
+        /// Somente usuários autenticados podem acessar este recurso.        
+        /// </remarks>
+        /// <response code="200">Se a requisição foi bem sucedida</response>        
+        /// <response code="401">Se o servidor não entendeu a requisição (Usuário não identificado)</response>  
+        /// <response code="403">Se o servidor não entendeu a requisição (Usuário não autorizado)</response>    
+        /// <response code="404">Se o servidor não encontrar o que foi pedido</response>    
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ProductResponseDTO>> GetByIdAsync(Guid id, CancellationToken cancellationToken)
         {
@@ -57,25 +85,20 @@ namespace Material.API.Controllers
             return Ok(warehouse);
         }
 
-        //[HttpGet("{code}")]
-        //[ProducesResponseType(StatusCodes.Status200OK)]
-        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
-        //[ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        //[ProducesResponseType(StatusCodes.Status404NotFound)]
-        //public async Task<ActionResult<ProductResponseDTO>> GetByCodeAsync(string number, CancellationToken cancellationToken)
-        //{
-        //    var warehouse = await _materialQueries.GetByCodeAsync(number, cancellationToken);
-
-        //    if (warehouse is null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return Ok(warehouse);
-        //}
-
+        /// <summary>
+        /// Realiza a atualização cadastral de um produto específico
+        /// </summary>
+        /// <remarks>
+        /// Use esta API para realizar a atualização cadastral de um produto específico. Todos os detalhes devem ser passados no corpo da requisição.
+        ///
+        /// Somente usuários autenticados podem acessar este recurso.        
+        /// </remarks>        
+        /// <response code="200">Se a requisição foi bem sucedida</response>        
+        /// <response code="400">Se o servidor não entendeu a requisição</response>                      
+        /// <response code="401">Se o servidor não entendeu a requisição (Usuário não identificado)</response>  
+        /// <response code="403">Se o servidor não entendeu a requisição (Usuário não autorizado)</response>    
         [HttpPut]
-        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
