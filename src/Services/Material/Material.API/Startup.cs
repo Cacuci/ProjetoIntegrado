@@ -60,6 +60,11 @@ namespace Material.API
                 app.UseDeveloperExceptionPage();
             }
 
+            if (env is null)
+            {
+                throw new ArgumentNullException(nameof(env));
+            }
+
             app.UseHttpsRedirection();
 
             app.UseAuthentication();

@@ -25,7 +25,7 @@ namespace Configuration.Application.Commands
         }
     }
 
-    public class CreateUserValidation : AbstractValidator<CreateUserCommand>
+    internal class CreateUserValidation : AbstractValidator<CreateUserCommand>
     {
         //VALIDAÇÃO DOS CAMPOS DO COMANDO PODE SER FEITA AQUI ATRAVÉS DO FLUENT VALIDATION
     }

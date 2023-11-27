@@ -23,9 +23,9 @@ namespace Inbound.Application.Commands
         }
     }
 
-    public class UpdateOrderValidation : AbstractValidator<UpdateOrderCommand>
+    internal class UpdateOrderValidation : AbstractValidator<UpdateOrderCommand>
     {
-        public UpdateOrderValidation()
+        internal UpdateOrderValidation()
         {
             RuleFor(order => order.Order.Documents)
                 .NotEmpty()

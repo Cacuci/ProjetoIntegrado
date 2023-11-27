@@ -5,9 +5,9 @@ namespace Configuration.Application.Commands
 {
     public class UpdateWarehouseCommand : Command
     {
-        public Guid ID { get; set; }
-        public string Code { get; set; }
-        public string Name { get; set; }
+        public Guid ID { get; private set; }
+        public string Code { get; private set; }
+        public string Name { get; private set; }
 
         public UpdateWarehouseCommand(Guid id, string code, string name)
         {
@@ -24,7 +24,7 @@ namespace Configuration.Application.Commands
         }
     }
 
-    public class DeleteWarehouseValidation : AbstractValidator<UpdateWarehouseCommand>
+    internal class DeleteWarehouseValidation : AbstractValidator<UpdateWarehouseCommand>
     {
         //VALIDAÇÃO DOS CAMPOS DO COMANDO PODE SER FEITA AQUI ATRAVÉS DO FLUENT VALIDATION
     }

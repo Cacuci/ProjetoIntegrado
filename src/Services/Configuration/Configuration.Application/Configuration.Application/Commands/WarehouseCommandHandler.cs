@@ -10,7 +10,7 @@ namespace Configuration.Application.Commands
                                            IRequestHandler<UpdateWarehouseCommand, bool>
     {
         private readonly IWarehouseRepository _warehouseRepository;
-        public readonly IMediatorHandler _mediatorHandler;
+        private readonly IMediatorHandler _mediatorHandler;
 
         public WarehouseCommandHandler(IWarehouseRepository warehouseRepository, IMediatorHandler mediatorHandler)
         {

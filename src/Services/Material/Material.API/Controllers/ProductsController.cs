@@ -102,7 +102,7 @@ namespace Material.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public async Task<ActionResult<string>> Update([FromBody] IEnumerable<ProductRequestDTO> request, CancellationToken cancellationToken)
+        public async Task<ActionResult<string>> Update([FromBody] IEnumerable<ProductRequestDTO> request)
         {
             if (ModelState.IsValid)
             {

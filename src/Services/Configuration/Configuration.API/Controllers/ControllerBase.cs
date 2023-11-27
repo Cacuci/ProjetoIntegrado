@@ -10,7 +10,7 @@ namespace Configuration.API.Controllers
         private readonly DomainNotificationHandler _notification;
         private readonly IMediatorHandler _mediatorHandler;
 
-        public ControllerBase(INotificationHandler<DomainNotification> notification,
+        protected ControllerBase(INotificationHandler<DomainNotification> notification,
                               IMediatorHandler mediatorHandler)
         {
             _notification = (DomainNotificationHandler)notification;

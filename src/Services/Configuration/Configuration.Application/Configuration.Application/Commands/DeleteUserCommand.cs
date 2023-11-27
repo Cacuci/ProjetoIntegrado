@@ -20,7 +20,7 @@ namespace Configuration.Application.Commands
         }
     }
 
-    public class DeleteUserValidation : AbstractValidator<DeleteUserCommand>
+    internal class DeleteUserValidation : AbstractValidator<DeleteUserCommand>
     {
         //VALIDAÇÃO DOS CAMPOS DO COMANDO PODE SER FEITA AQUI ATRAVÉS DO FLUENT VALIDATION
     }

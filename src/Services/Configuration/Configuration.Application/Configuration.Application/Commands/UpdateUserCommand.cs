@@ -5,8 +5,8 @@ namespace Configuration.Application.Commands
 {
     public class UpdateUserCommand : Command
     {
-        public string ID { get; set; }
-        public string Name { get; set; }
+        public string ID { get; private set; }
+        public string Name { get; private set; }
 
         public UpdateUserCommand(string iD, string name)
         {
@@ -22,7 +22,7 @@ namespace Configuration.Application.Commands
         }
     }
 
-    public class UpdateUserValidation : AbstractValidator<UpdateUserCommand>
+    internal class UpdateUserValidation : AbstractValidator<UpdateUserCommand>
     {
         //VALIDAÇÃO DOS CAMPOS DO COMANDO PODE SER FEITA AQUI ATRAVÉS DO FLUENT VALIDATION
     }

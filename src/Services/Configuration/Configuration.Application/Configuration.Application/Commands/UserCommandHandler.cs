@@ -13,7 +13,7 @@ namespace Configuration.Application.Commands
         private readonly IUserRepository _userRepository;
         private readonly IMediatorHandler _mediatorHandler;
 
-        public UserCommandHandler(IUserRepository userRepository, IMediatorHandler mediatorHandler)
+        internal UserCommandHandler(IUserRepository userRepository, IMediatorHandler mediatorHandler)
         {
             _userRepository = userRepository;
             _mediatorHandler = mediatorHandler;

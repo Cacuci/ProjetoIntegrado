@@ -28,7 +28,6 @@ namespace Configuration.API.Controllers
         /// </summary>        
         /// <remarks>
         /// Está API pode ser usada para retornar os depósitos.
-        ///
         /// Não há parâmetros obrigatórios para esta API.
         ///
         /// Somente usuários autenticados podem acessar este recurso.        

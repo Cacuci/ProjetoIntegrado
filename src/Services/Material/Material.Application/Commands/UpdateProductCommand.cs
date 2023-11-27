@@ -6,7 +6,7 @@ namespace Material.Application.Commands
 {
     public class UpdateProductCommand : Command
     {
-        public IEnumerable<ProductRequestDTO> Products { get; set; }
+        public IEnumerable<ProductRequestDTO> Products { get; private set; }
 
         public UpdateProductCommand(IEnumerable<ProductRequestDTO> products)
         {
@@ -21,9 +21,9 @@ namespace Material.Application.Commands
         }
     }
 
-    public class UpdateProductValidation : AbstractValidator<UpdateProductCommand>
+    internal class UpdateProductValidation : AbstractValidator<UpdateProductCommand>
     {
-        public UpdateProductValidation()
+        internal UpdateProductValidation()
         {
             RuleFor(product => product.Products)
                 .NotEmpty()

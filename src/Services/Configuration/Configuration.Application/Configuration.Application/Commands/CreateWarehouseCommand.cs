@@ -23,7 +23,7 @@ namespace Configuration.Application.Commands
         }
     }
 
-    public class CreateWarehouseValidation : AbstractValidator<CreateWarehouseCommand>
+    internal class CreateWarehouseValidation : AbstractValidator<CreateWarehouseCommand>
     {
         //VALIDAÇÃO DOS CAMPOS DO COMANDO PODE SER FEITA AQUI ATRAVÉS DO FLUENT VALIDATION
     }

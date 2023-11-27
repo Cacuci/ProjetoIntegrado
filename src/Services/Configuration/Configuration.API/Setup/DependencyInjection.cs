@@ -9,9 +9,9 @@ using MediatR;
 
 namespace Configuration.API.Setup
 {
-    public static class DependencyInjection
+    internal static class DependencyInjection
     {
-        public static void RegisterServices(this IServiceCollection services)
+        internal static void RegisterServices(this IServiceCollection services)
         {
             // Mediator
             services.AddScoped<IMediatorHandler, MediatorHandler>();

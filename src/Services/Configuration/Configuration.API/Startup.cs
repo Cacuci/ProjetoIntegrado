@@ -9,17 +9,17 @@ using System.Reflection;
 
 namespace Configuration.API
 {
-    public class Startup
+    internal class Startup
     {
-        public Startup(IConfiguration configuration)
+        internal Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        internal void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
 
@@ -61,7 +61,7 @@ namespace Configuration.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(WebApplication app, IWebHostEnvironment env)
+        internal void Configure(WebApplication app, IWebHostEnvironment env)
         {
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

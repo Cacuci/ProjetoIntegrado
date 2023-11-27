@@ -3,9 +3,9 @@ using Microsoft.OpenApi.Models;
 
 namespace Configuration.API.Setup
 {
-    public static class Swagger
+    internal static class Swagger
     {
-        public static void RegisterSwagger(this IServiceCollection services)
+        internal static void RegisterSwagger(this IServiceCollection services)
         {
             services.AddEndpointsApiExplorer();
 
